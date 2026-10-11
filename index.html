@@ -129,6 +129,25 @@ ul.ing li b{min-width:74px}
 .vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
 label.btn{display:block;cursor:pointer}
 
+/* Zeichnungen */
+.sketchwrap{margin:2px -4px 14px}
+.sketch{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.12))}
+svg.thumb{background:#FFFDF6;border:1px solid #E6DFD2}
+.ing .no{display:inline-grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;background:#F6C9C1;color:#B24A3A;font-weight:900;font-size:12px}
+.forms{display:flex;gap:8px;margin:8px 0 6px;flex-wrap:wrap}
+.form{width:84px;background:#FFFDF6;border:1px solid #E6DFD2;border-radius:12px;padding:4px 4px 6px;text-align:center}
+.form svg{width:100%;height:auto;display:block}
+.form span{display:block;font-family:Noteworthy,'Chalkboard SE','Comic Sans MS',cursive;font-size:12px;line-height:1.15;color:#3b342e}
+.stage.cur{background:var(--pea-soft);border-radius:0 12px 12px 0;padding-right:10px}
+ul.ideas{margin:8px 0 0;padding-left:20px}
+ul.ideas li{margin:6px 0}
+.rchips{display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.rchips::-webkit-scrollbar{display:none}
+.rchip{flex:none;width:118px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px;text-align:left}
+.rchip svg.thumb{width:100%;height:64px;border-radius:10px}
+.rchip span{display:block;font-weight:800;font-size:13px;line-height:1.2;margin-top:6px}
+.rchip small{color:var(--muted);font-size:11px;font-weight:700}
+
 /* Tagebuch */
 .day{font-weight:900;font-size:15px;margin:18px 0 8px;color:var(--muted)}
 .entry{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
@@ -317,43 +336,162 @@ const ALLERGENS=[
 
 /* ---------- Rezepte ---------- */
 const RECIPES=[
+/* Einstieg 5–6 Monate */
+{n:"Pastinaken-Brei",e:"🥕",m:5,t:20,typ:"Brei",d:"Der allererste Löffel: nur ein Gemüse, mild und leicht süßlich.",
+ i:[["100 g","Pastinake"],["1 TL","Rapsöl"]],
+ s:["Pastinake schälen und in Scheiben schneiden.","In wenig Wasser 12–15 Min. weich dämpfen.","Mit etwas Kochwasser fein pürieren und das Öl unterrühren.","Mit 2–3 Löffeln starten, die Menge in den nächsten Tagen langsam steigern."]},
 {n:"Karotten-Kartoffel-Rind-Brei",e:"🥕",m:5,t:30,typ:"Brei",d:"Der klassische erste Mittagsbrei.",
- i:[["100 g","Karotten"],["50 g","Kartoffeln"],["25 g","mageres Rindfleisch"],["3 EL","Orangensaft oder Obstmus"],["1 EL","Rapsöl (8–10 g)"]],
- s:["Fleisch klein schneiden und in wenig Wasser ca. 15 Min. garen.","Karotten und Kartoffeln schälen, würfeln, zum Fleisch geben und weitere 15 Min. garen.","Alles mit etwas Kochwasser fein pürieren.","Saft und Rapsöl unterrühren. Nicht salzen."]},
-{n:"Kürbis-Kartoffel-Hafer-Brei",e:"🎃",m:6,t:25,typ:"Brei",d:"Vegetarischer Mittagsbrei – Getreide statt Fleisch, Vitamin C für das Eisen.",
- i:[["100 g","Hokkaido"],["50 g","Kartoffeln"],["10 g","zarte Haferflocken"],["3 EL","Orangensaft"],["1 EL","Rapsöl"]],
+ i:[["100 g","Karotten"],["50 g","Kartoffeln"],["25 g","Rindfleisch, mager"],["3 EL","Orangensaft"],["1 EL","Rapsöl"]],
+ s:["Fleisch klein schneiden und in wenig Wasser ca. 15 Min. garen.","Karotten und Kartoffeln schälen, würfeln und weitere 15 Min. mitgaren.","Alles mit etwas Kochwasser fein pürieren.","Saft und Rapsöl unterrühren. Nicht salzen."]},
+{n:"Kürbis-Kartoffel-Hähnchen-Brei",e:"🎃",m:5,t:30,typ:"Brei",d:"Mild und cremig – Hokkaido mögen fast alle Babys.",
+ i:[["100 g","Hokkaido-Kürbis"],["50 g","Kartoffeln"],["25 g","Hähnchenbrust"],["3 EL","Apfelmus"],["1 EL","Rapsöl"]],
+ s:["Hähnchen fein würfeln und in wenig Wasser 10 Min. garen.","Kürbis und Kartoffel würfeln, dazugeben und 15 Min. weich kochen.","Mit etwas Kochwasser fein pürieren.","Apfelmus und Öl unterrühren."]},
+{n:"Apfelmus selbst gemacht",e:"🍎",m:5,t:15,typ:"Snack",d:"Ohne Zucker – auch als Vitamin-C-Zugabe für den Brei.",
+ i:[["2","Äpfel, süß"],["50 ml","Wasser"]],
+ s:["Äpfel schälen, entkernen und würfeln.","Mit dem Wasser zugedeckt 8–10 Min. weich kochen.","Fein pürieren.","Hält 2 Tage im Kühlschrank, portioniert eingefroren ca. 3 Monate."]},
+{n:"Avocado-Bananen-Mus",e:"🥑",m:5,t:5,typ:"Snack",d:"Ganz ohne Kochen – reich an guten Fetten.",
+ i:[["½","Avocado, reif"],["½","Banane, reif"]],
+ s:["Avocado-Fruchtfleisch auslöffeln.","Mit der Banane in einer Schüssel mit der Gabel zerdrücken.","Sofort servieren, sonst wird es braun."]},
+{n:"Milch-Getreide-Brei",e:"🥛",m:6,t:10,typ:"Brei",d:"Der Abendbrei, etwa einen Monat nach dem Mittagsbrei.",
+ i:[["200 ml","Vollmilch"],["20 g","Grieß (oder Haferflocken)"],["20 g","Obstmus"]],
+ s:["Milch aufkochen, Getreide einrühren.","2–3 Min. unter Rühren quellen lassen.","Etwas abkühlen, Obstmus unterrühren.","Temperatur am Handgelenk prüfen."]},
+{n:"Kürbis-Kartoffel-Hafer-Brei",e:"🎃",m:6,t:25,typ:"Brei",d:"Vegetarischer Mittagsbrei – Haferflocken statt Fleisch, Vitamin C für das Eisen.",
+ i:[["100 g","Hokkaido-Kürbis"],["50 g","Kartoffeln"],["10 g","Haferflocken, zart"],["3 EL","Orangensaft"],["1 EL","Rapsöl"]],
  s:["Kürbis und Kartoffeln würfeln und 15 Min. dämpfen.","Mit etwas Kochwasser pürieren.","Haferflocken einrühren und kurz quellen lassen.","Saft und Öl unterrühren."]},
 {n:"Pastinaken-Lachs-Brei",e:"🐟",m:6,t:25,typ:"Brei",d:"1–2× pro Woche statt Fleisch.",
- i:[["100 g","Pastinaken"],["50 g","Kartoffeln"],["25 g","Lachsfilet ohne Haut"],["1 EL","Rapsöl"]],
+ i:[["100 g","Pastinaken"],["50 g","Kartoffeln"],["25 g","Lachsfilet"],["1 EL","Rapsöl"]],
  s:["Pastinaken und Kartoffeln würfeln und 12 Min. garen.","Lachs die letzten 8 Min. mitdämpfen, bis er durch ist.","Gräten gründlich prüfen.","Alles pürieren, Öl unterrühren."]},
-{n:"Milch-Getreide-Brei",e:"🥛",m:6,t:10,typ:"Brei",d:"Der Abendbrei, etwa einen Monat nach dem Mittagsbrei.",
- i:[["200 ml","Vollmilch 3,5 %"],["20 g","Grieß oder zarte Haferflocken"],["20 g","Obstmus"]],
- s:["Milch aufkochen, Getreide einrühren.","2–3 Min. unter Rühren quellen lassen.","Etwas abkühlen, Obstmus unterrühren.","Temperatur am Handgelenk prüfen."]},
-{n:"Getreide-Obst-Brei",e:"🍐",m:7,t:10,typ:"Brei",d:"Milchfreier Nachmittagsbrei.",
- i:[["20 g","zarte Haferflocken"],["90 ml","Wasser"],["100 g","reife Birne"],["1 TL","Rapsöl (5 g)"]],
- s:["Haferflocken in Wasser aufkochen und quellen lassen.","Birne fein reiben oder pürieren.","Alles mischen, Öl unterrühren."]},
-{n:"Süßkartoffel-Pommes",e:"🍠",m:6,t:30,typ:"Fingerfood",d:"Weich gebacken, perfekt zum Greifen.",
- i:[["1","Süßkartoffel"],["1 TL","Rapsöl"],["1 Prise","Paprika edelsüß (optional)"]],
- s:["Ofen auf 200 °C vorheizen.","Süßkartoffel schälen und in fingerdicke Sticks schneiden.","Mit Öl mischen und 25 Min. backen, bis sie innen ganz weich sind.","Abkühlen lassen – innen wird es lange heiß."]},
-{n:"Bananen-Hafer-Pancakes",e:"🥞",m:6,t:15,typ:"Fingerfood",d:"Drei Zutaten, ohne Zucker.",
- i:[["1","reife Banane"],["1","Ei"],["4 EL","zarte Haferflocken"]],
- s:["Banane zerdrücken, Ei und Haferflocken unterrühren.","In einer beschichteten Pfanne mit wenig Öl kleine Pancakes backen.","Von beiden Seiten 2–3 Min. backen, bis sie ganz durch sind.","In Streifen schneiden."]},
-{n:"Omelett-Streifen mit Spinat",e:"🍳",m:6,t:10,typ:"Fingerfood",d:"Ei und Eisen zum Selbstessen.",
- i:[["1","Ei"],["1 Handvoll","Babyspinat"],["1 EL","Milch"]],
- s:["Spinat sehr fein hacken.","Mit Ei und Milch verquirlen.","Bei mittlerer Hitze stocken lassen, wenden, vollständig durchgaren.","In fingerbreite Streifen schneiden."]},
+{n:"Erbsen-Kartoffel-Pute-Brei",e:"🫛",m:6,t:25,typ:"Brei",d:"Leuchtend grün und eiweißreich.",
+ i:[["100 g","Erbsen (TK)"],["50 g","Kartoffeln"],["25 g","Putenbrust"],["3 EL","Apfelmus"],["1 EL","Rapsöl"]],
+ s:["Pute fein würfeln und 10 Min. in wenig Wasser garen.","Kartoffel würfeln, mit den Erbsen dazugeben und 12 Min. kochen.","Sehr fein pürieren – Erbsenschalen sonst durch ein Sieb streichen.","Apfelmus und Öl unterrühren."]},
+{n:"Birnen-Hirse-Brei",e:"🍐",m:6,t:10,typ:"Brei",d:"Milchfreier Nachmittagsbrei, glutenfrei.",
+ i:[["20 g","Hirseflocken"],["90 ml","Wasser"],["100 g","Birne, reif"],["1 TL","Rapsöl"]],
+ s:["Hirseflocken im Wasser aufkochen und 3 Min. quellen lassen.","Birne schälen und fein reiben oder pürieren.","Alles verrühren und das Öl unterrühren."]},
+{n:"Grießbrei mit Pflaumenmus",e:"🥣",m:6,t:10,typ:"Brei",d:"Abendbrei-Variante, wirkt leicht verdauungsfördernd.",
+ i:[["200 ml","Vollmilch"],["20 g","Grieß"],["2 EL","Pflaumenmus, ungesüßt"]],
+ s:["Milch aufkochen und den Grieß unter Rühren einrieseln lassen.","Bei kleiner Hitze 3 Min. quellen lassen.","Etwas abkühlen lassen und das Pflaumenmus unterrühren."]},
 {n:"Apfel-Zimt-Porridge",e:"🍎",m:6,t:10,typ:"Frühstück",d:"Warm und cremig.",
- i:[["30 g","zarte Haferflocken"],["150 ml","Wasser oder Vollmilch"],["½","Apfel"],["1 Prise","Ceylon-Zimt"]],
- s:["Haferflocken mit Flüssigkeit aufkochen.","Apfel fein reiben und 2 Min. mitköcheln.","Zimt einrühren, abkühlen lassen."]},
-{n:"Brokkoli-Hirse-Taler",e:"🥦",m:8,t:35,typ:"Fingerfood",d:"Gut zum Vorbereiten und Einfrieren.",
- i:[["60 g","Hirse"],["100 g","Brokkoli"],["1","Ei"],["2 EL","zarte Haferflocken"]],
- s:["Hirse mit 150 ml Wasser 10 Min. köcheln und quellen lassen.","Brokkoli weich dämpfen und fein hacken.","Alles mit Ei und Haferflocken mischen, kleine Taler formen.","Bei 180 °C ca. 20 Min. backen, nach der Hälfte wenden."]},
+ i:[["30 g","Haferflocken, zart"],["150 ml","Wasser oder Vollmilch"],["½","Apfel"],["1 Prise","Ceylon-Zimt"]],
+ s:["Haferflocken mit der Flüssigkeit aufkochen.","Apfel fein reiben und 2 Min. mitköcheln.","Zimt einrühren und abkühlen lassen."]},
+/* 6–9 Monate */
+{n:"Süßkartoffel-Pommes",e:"🍠",m:6,t:30,typ:"Fingerfood",d:"Weich gebacken, perfekt zum Greifen.",
+ i:[["1","Süßkartoffel"],["1 TL","Rapsöl"],["1 Prise","Paprika edelsüß"]],
+ s:["Ofen auf 200 °C vorheizen.","Süßkartoffel schälen und in fingerdicke Sticks schneiden.","Mit Öl mischen und auf dem Backblech 25 Min. backen, bis sie innen ganz weich sind.","Abkühlen lassen – innen bleibt es lange heiß."]},
+{n:"Gedämpfte Gemüsesticks",e:"🥦",m:6,t:15,typ:"Fingerfood",d:"Der Klassiker für den breifreien Start.",
+ i:[["1","Karotte"],["½","Zucchini"],["4","Brokkoliröschen"],["½","Süßkartoffel"]],
+ s:["Gemüse in fingerlange, fingerdicke Sticks schneiden, Brokkoli mit Stiel lassen.","Karotte und Süßkartoffel 12 Min., Zucchini und Brokkoli 6 Min. dämpfen.","Test: Ein Stick muss sich zwischen Daumen und Zeigefinger zerdrücken lassen.","Lauwarm servieren."]},
+{n:"Bananen-Hafer-Pancakes",e:"🥞",m:6,t:15,typ:"Fingerfood",d:"Drei Zutaten, ohne Zucker.",
+ i:[["1","Banane, reif"],["1","Ei"],["4 EL","Haferflocken, zart"]],
+ s:["Banane zerdrücken, Ei und Haferflocken unterrühren.","In einer beschichteten Pfanne mit wenig Öl kleine Pancakes ausbacken.","Von beiden Seiten 2–3 Min. backen, bis sie ganz durch sind.","In Streifen schneiden."]},
+{n:"Omelett-Streifen mit Spinat",e:"🍳",m:6,t:10,typ:"Fingerfood",d:"Ei und Eisen zum Selbstessen.",
+ i:[["1","Ei"],["1 Handvoll","Babyspinat"],["1 EL","Vollmilch"]],
+ s:["Spinat sehr fein hacken.","Mit Ei und Milch verquirlen.","In der Pfanne bei mittlerer Hitze stocken lassen, wenden, vollständig durchgaren.","In fingerbreite Streifen schneiden."]},
+{n:"Hummus ohne Salz",e:"🧆",m:7,t:10,typ:"Snack",d:"Zum Dippen mit Gemüsesticks oder dünn aufs Brot.",
+ i:[["200 g","Kichererbsen (Glas)"],["1 EL","Tahin"],["1 EL","Zitronensaft"],["2 EL","Rapsöl"],["4 EL","Wasser"]],
+ s:["Kichererbsen abgießen und gründlich abspülen.","Alles zusammen fein pürieren, bis es cremig ist.","Bei Bedarf mehr Wasser zugeben.","Hält 3 Tage im Kühlschrank."]},
 {n:"Rote-Linsen-Dal",e:"🫘",m:7,t:25,typ:"Brei",d:"Mild, eisenreich, für die ganze Familie.",
  i:[["50 g","rote Linsen"],["1","Karotte"],["50 ml","Kokosmilch"],["200 ml","Wasser"],["1 Prise","Kurkuma"]],
  s:["Linsen waschen, Karotte fein würfeln.","Mit Wasser 15 Min. köcheln, bis alles zerfällt.","Kokosmilch und Kurkuma einrühren.","Baby-Portion abnehmen, für Erwachsene danach würzen."]},
+{n:"Getreide-Obst-Brei",e:"🍐",m:7,t:10,typ:"Brei",d:"Milchfreier Nachmittagsbrei.",
+ i:[["20 g","Haferflocken, zart"],["90 ml","Wasser"],["100 g","Birne, reif"],["1 TL","Rapsöl"]],
+ s:["Haferflocken in Wasser aufkochen und quellen lassen.","Birne fein reiben oder pürieren.","Alles mischen, Öl unterrühren."]},
+{n:"Joghurt mit Birne und Mandelmus",e:"🥣",m:7,t:5,typ:"Frühstück",d:"Schnell, cremig – und Mandel als Allergen gleich mit dabei.",
+ i:[["100 g","Naturjoghurt 3,5 %"],["½","Birne, reif"],["1 TL","Mandelmus"]],
+ s:["Birne fein reiben.","Mandelmus mit etwas Joghurt glatt rühren, damit es nicht klebt.","Alles verrühren."]},
+{n:"Kürbis-Pancakes",e:"🎃",m:8,t:25,typ:"Fingerfood",d:"Saftig, weich und leuchtend orange.",
+ i:[["100 g","Hokkaido-Kürbis, gegart"],["1","Ei"],["50 g","Haferflocken, zart"],["1 Prise","Zimt"]],
+ s:["Gegarten Kürbis zerdrücken.","Mit Ei, Haferflocken und Zimt verrühren und 5 Min. quellen lassen.","In der Pfanne mit wenig Öl kleine Pancakes ausbacken, bis sie ganz durch sind.","Abkühlen lassen und in Streifen schneiden."]},
+{n:"Brokkoli-Hirse-Taler",e:"🥦",m:8,t:35,typ:"Fingerfood",d:"Gut zum Vorbereiten und Einfrieren.",
+ i:[["60 g","Hirse"],["100 g","Brokkoli"],["1","Ei"],["2 EL","Haferflocken, zart"]],
+ s:["Hirse mit 150 ml Wasser 10 Min. köcheln und quellen lassen.","Brokkoli weich dämpfen und fein hacken.","Alles mit Ei und Haferflocken mischen, kleine Taler formen.","Im Ofen bei 180 °C ca. 20 Min. backen, nach der Hälfte wenden."]},
+{n:"Kartoffel-Spinat-Taler",e:"🥔",m:8,t:35,typ:"Fingerfood",d:"Weich innen, leicht knusprig außen.",
+ i:[["300 g","Kartoffeln, mehlig"],["1 Handvoll","Spinat"],["1","Ei"],["2 EL","Haferflocken, zart"]],
+ s:["Kartoffeln kochen, pellen und zerdrücken.","Spinat blanchieren und sehr fein hacken.","Alles mit Ei und Haferflocken verkneten, kleine Taler formen.","Auf dem Backblech bei 200 °C 20 Min. backen, einmal wenden."]},
+{n:"Ei-Gemüse-Muffins",e:"🧁",m:8,t:30,typ:"Fingerfood",d:"Kleine Omeletts aus der Muffinform.",
+ i:[["3","Eier"],["½","Paprika, rot"],["1 Handvoll","Spinat"],["30 g","milder Käse, gerieben"]],
+ s:["Ofen auf 180 °C vorheizen, Muffinform einfetten.","Paprika und Spinat sehr fein hacken.","Mit Eiern und Käse verquirlen und in 6 Mulden füllen.","20 Min. backen, bis die Eier vollständig gestockt sind."]},
+{n:"Polenta-Sticks",e:"🌽",m:8,t:40,typ:"Fingerfood",d:"Weich, mild und gut zu greifen.",
+ i:[["50 g","Polenta"],["200 ml","Wasser"],["1 TL","Butter"],["20 g","milder Käse, gerieben"]],
+ s:["Wasser aufkochen, Polenta einrühren und 5 Min. unter Rühren quellen lassen.","Butter und Käse unterrühren, 1 cm dick in eine Form streichen.","Fest werden lassen (ca. 30 Min.), dann in Sticks schneiden.","Im Backofen bei 200 °C 10 Min. backen."]},
+{n:"Avocado-Toast-Streifen",e:"🥑",m:8,t:5,typ:"Frühstück",d:"Fein gemahlenes Brot mit cremigem Belag.",
+ i:[["1 Scheibe","Vollkornbrot, fein"],["¼","Avocado, reif"],["1 Spritzer","Zitronensaft"]],
+ s:["Brot leicht toasten, Rinde bei Bedarf abschneiden.","Avocado mit Zitronensaft zerdrücken und dünn aufstreichen.","In fingerbreite Streifen schneiden."]},
+{n:"Bananen-Hafer-Kekse",e:"🍪",m:8,t:25,typ:"Snack",d:"Weiche Kekse ohne Zucker.",
+ i:[["2","Bananen, reif"],["100 g","Haferflocken, zart"],["1 EL","Mandelmus"]],
+ s:["Ofen auf 180 °C vorheizen.","Bananen zerdrücken und mit Haferflocken und Mandelmus verkneten.","Kleine, flache Kekse aufs Backblech setzen.","15 Min. backen – sie bleiben weich."]},
+{n:"Linsen-Karotten-Bällchen",e:"🫘",m:9,t:40,typ:"Fingerfood",d:"Vegetarisch und eisenreich.",
+ i:[["80 g","rote Linsen"],["1","Karotte"],["3 EL","Haferflocken, zart"],["1","Ei"]],
+ s:["Linsen in 200 ml Wasser 15 Min. weich kochen und abtropfen lassen.","Karotte fein reiben.","Alles verkneten und kleine Bällchen formen.","Im Ofen bei 190 °C 20 Min. backen."]},
+{n:"Fisch-Kartoffel-Bällchen",e:"🐟",m:9,t:40,typ:"Fingerfood",d:"Fisch zum Selbstessen.",
+ i:[["150 g","Seelachs"],["200 g","Kartoffeln"],["2 EL","Haferflocken, zart"],["1 TL","Kräuter, gehackt"]],
+ s:["Kartoffeln kochen und zerdrücken.","Fisch dämpfen, bis er durch ist, Gräten entfernen und zerpflücken.","Alles mit Haferflocken und Kräutern mischen, Bällchen formen.","Im Ofen bei 190 °C 20 Min. backen."]},
+{n:"Overnight Oats mit Heidelbeeren",e:"🫐",m:9,t:5,typ:"Frühstück",d:"Abends vorbereiten, morgens fertig.",
+ i:[["30 g","Haferflocken, zart"],["50 g","Naturjoghurt"],["50 ml","Wasser"],["50 g","Heidelbeeren"]],
+ s:["Haferflocken, Joghurt und Wasser verrühren.","Abgedeckt über Nacht in den Kühlschrank stellen.","Morgens die Heidelbeeren zerdrücken und unterrühren."]},
+{n:"Couscous mit Gemüse",e:"🥣",m:9,t:15,typ:"Familie",d:"Schnelles Mittagessen in 15 Minuten.",
+ i:[["50 g","Couscous"],["½","Zucchini"],["1","Tomate"],["1 EL","Rapsöl"]],
+ s:["Zucchini und gehäutete Tomate sehr klein würfeln.","Im Öl 5 Min. weich dünsten.","Couscous mit 80 ml kochendem Wasser übergießen und 5 Min. quellen lassen.","Alles mischen."]},
+/* 10–12 Monate */
 {n:"Hähnchen-Gemüse-Nudeln",e:"🍝",m:10,t:25,typ:"Familie",d:"Familienessen – Babyportion vor dem Salzen abnehmen.",
  i:[["150 g","Fusilli"],["150 g","Hähnchenbrust"],["1","Zucchini"],["2","Tomaten"],["1 EL","Rapsöl"]],
- s:["Nudeln weich kochen.","Hähnchen fein würfeln und im Öl durchgaren.","Zucchini und gehäutete Tomaten dazu, 10 Min. schmoren.","Mit den Nudeln mischen, Babyportion abnehmen, Rest würzen."]}
+ s:["Nudeln weich kochen.","Hähnchen fein würfeln und im Öl durchgaren.","Zucchini und gehäutete Tomaten dazu, 10 Min. schmoren.","Mit den Nudeln mischen, Babyportion abnehmen, Rest würzen."]},
+{n:"Mini-Frikadellen",e:"🧆",m:10,t:35,typ:"Fingerfood",d:"Mit verstecktem Gemüse, im Ofen gebacken.",
+ i:[["200 g","Rinderhack"],["1","Karotte"],["1","Ei"],["3 EL","Haferflocken, zart"]],
+ s:["Karotte fein reiben.","Alles gut verkneten und kleine Bällchen formen.","Im Ofen bei 200 °C ca. 20 Min. backen, bis sie innen durch sind.","Für kleine Esser halbieren."]},
+{n:"Gemüse-Risotto",e:"🍚",m:10,t:35,typ:"Familie",d:"Cremig ohne Salz – Erwachsene würzen nach.",
+ i:[["80 g","Risottoreis"],["1","Karotte"],["½","Zucchini"],["50 g","Erbsen"],["20 g","milder Käse"],["1 EL","Rapsöl"]],
+ s:["Karotte und Zucchini klein würfeln und im Öl andünsten.","Reis dazugeben und nach und nach ca. 400 ml Wasser angießen, 20 Min. köcheln.","Erbsen die letzten 5 Min. mitgaren.","Käse unterrühren."]},
+{n:"Lachs-Brokkoli-Nudeln",e:"🐟",m:10,t:20,typ:"Familie",d:"Omega-3 im Familienessen.",
+ i:[["150 g","Nudeln"],["100 g","Lachsfilet"],["150 g","Brokkoli"],["100 g","Frischkäse"]],
+ s:["Nudeln kochen, Brokkoli die letzten 5 Min. mitkochen.","Lachs in Würfeln in wenig Wasser 6 Min. garen, Gräten prüfen.","Frischkäse mit etwas Nudelwasser glatt rühren.","Alles mischen, Lachs zerpflücken."]},
+{n:"Tomaten-Linsen-Nudeln",e:"🍅",m:10,t:25,typ:"Familie",d:"Vegetarische Bolognese-Alternative.",
+ i:[["150 g","Nudeln"],["50 g","rote Linsen"],["400 g","passierte Tomaten"],["1","Karotte"],["1 EL","Rapsöl"]],
+ s:["Karotte fein reiben und im Öl andünsten.","Linsen und passierte Tomaten dazugeben, 15 Min. köcheln.","Nudeln weich kochen.","Mischen, Babyportion abnehmen, Rest würzen."]},
+{n:"Möhren-Kartoffel-Puffer",e:"🥔",m:10,t:30,typ:"Fingerfood",d:"Saftig gebraten in wenig Öl.",
+ i:[["300 g","Kartoffeln"],["1","Karotte"],["1","Ei"],["2 EL","Haferflocken, zart"],["2 EL","Rapsöl"]],
+ s:["Kartoffeln und Karotte fein reiben und gut ausdrücken.","Mit Ei und Haferflocken mischen.","In der Pfanne im Öl kleine, flache Puffer ausbacken, je Seite 4 Min.","Auf Küchenpapier abtropfen lassen."]},
+{n:"Pfannkuchen",e:"🥞",m:10,t:20,typ:"Frühstück",d:"Ohne Zucker – süß mit Obst.",
+ i:[["1","Ei"],["100 g","Dinkelmehl"],["150 ml","Vollmilch"],["1 EL","Rapsöl"]],
+ s:["Ei, Mehl und Milch zu einem glatten Teig verrühren, 10 Min. ruhen lassen.","In der Pfanne mit wenig Öl dünne Pfannkuchen ausbacken.","Mit Apfelmus bestreichen und in Streifen schneiden."]},
+{n:"Apfel-Hafer-Muffins",e:"🧁",m:10,t:35,typ:"Snack",d:"Süß nur durch Obst.",
+ i:[["2","Äpfel"],["2","Bananen, reif"],["150 g","Haferflocken, zart"],["2","Eier"],["1 TL","Backpulver"]],
+ s:["Ofen auf 180 °C vorheizen.","Äpfel fein reiben, Bananen zerdrücken.","Alles verrühren und in 12 Muffinförmchen füllen.","20–25 Min. backen."]},
+{n:"Quark mit Himbeeren",e:"🍓",m:10,t:5,typ:"Snack",d:"Cremiger Nachmittagssnack.",
+ i:[["50 g","Speisequark 20 %"],["50 g","Naturjoghurt"],["50 g","Himbeeren"]],
+ s:["Quark und Joghurt glatt rühren.","Himbeeren mit der Gabel zerdrücken.","Locker unterziehen."]},
+/* Ab 12 Monaten */
+{n:"Kinder-Bolognese",e:"🍝",m:12,t:35,typ:"Familie",d:"Mit viel Gemüse – für die ganze Familie.",
+ i:[["200 g","Rinderhack"],["1","Karotte"],["1","Zucchini"],["400 g","passierte Tomaten"],["250 g","Spaghetti"],["1 EL","Rapsöl"]],
+ s:["Karotte und Zucchini fein reiben.","Hack im Öl krümelig braten, bis es durch ist.","Gemüse und Tomaten dazugeben und 20 Min. köcheln.","Nudeln kochen, Kinderportion abnehmen, Rest würzen."]},
+{n:"Hähnchen-Reis-Pfanne",e:"🍗",m:12,t:30,typ:"Familie",d:"Bunte Pfanne mit Paprika und Erbsen.",
+ i:[["150 g","Reis"],["200 g","Hähnchenbrust"],["1","Paprika"],["100 g","Erbsen"],["1 EL","Rapsöl"]],
+ s:["Reis in reichlich Wasser kochen und abgießen.","Hähnchen klein schneiden und in der Pfanne durchbraten.","Paprika und Erbsen dazugeben und 8 Min. mitbraten.","Reis untermischen."]},
+{n:"Ofengemüse mit Kartoffelspalten",e:"🥔",m:12,t:45,typ:"Familie",d:"Alles auf ein Blech.",
+ i:[["4","Kartoffeln"],["2","Karotten"],["1","Zucchini"],["1","Paprika"],["2 EL","Rapsöl"],["1 TL","Kräuter"]],
+ s:["Ofen auf 200 °C vorheizen.","Kartoffeln in Spalten, Gemüse in große Stücke schneiden.","Mit Öl und Kräutern mischen und auf dem Backblech 35 Min. backen.","Erwachsene salzen erst auf dem Teller."]},
+{n:"Fischstäbchen selbst gemacht",e:"🐟",m:12,t:25,typ:"Familie",d:"Ohne Fertigpanade, schön saftig.",
+ i:[["300 g","Seelachs"],["1","Ei"],["5 EL","Semmelbrösel"],["2 EL","Rapsöl"]],
+ s:["Fisch in fingerdicke Streifen schneiden, Gräten prüfen.","Erst durchs verquirlte Ei, dann durch die Brösel ziehen.","In der Pfanne im Öl je Seite 3–4 Min. braten, bis der Fisch durch ist."]},
+{n:"Kinder-Waffeln ohne Zucker",e:"🧇",m:12,t:25,typ:"Snack",d:"Mit Banane gesüßt – wie bei Oma, nur gesünder.",
+ i:[["2","Bananen, reif"],["2","Eier"],["150 g","Dinkelmehl"],["150 ml","Vollmilch"],["1 TL","Backpulver"],["1 EL","Rapsöl"]],
+ s:["Bananen zerdrücken.","Mit Eiern, Milch und Öl verrühren.","Mehl und Backpulver unterrühren.","Im heißen Waffeleisen goldbraun ausbacken."]},
+{n:"Kartoffelsuppe",e:"🥣",m:12,t:30,typ:"Familie",d:"Wärmt von innen.",
+ i:[["400 g","Kartoffeln"],["1","Karotte"],["500 ml","Wasser"],["50 ml","Vollmilch"],["1 TL","Kräuter"]],
+ s:["Kartoffeln und Karotte würfeln.","Im Wasser 20 Min. weich kochen.","Milch dazugeben und fein pürieren.","Mit Kräutern bestreuen, Erwachsene würzen nach."]},
+{n:"Milchreis mit Apfelmus",e:"🍚",m:12,t:35,typ:"Snack",d:"Ohne Zucker – süß durch Apfel.",
+ i:[["100 g","Milchreis"],["500 ml","Vollmilch"],["1 Prise","Zimt"],["4 EL","Apfelmus"]],
+ s:["Milch aufkochen, Reis einrühren.","Bei kleinster Hitze 30 Min. quellen lassen, öfter umrühren.","Mit Zimt und Apfelmus servieren.","Reis nicht täglich anbieten."]},
+{n:"Rührei mit Tomate",e:"🍳",m:12,t:10,typ:"Frühstück",d:"Schnelles Frühstück mit Brot.",
+ i:[["2","Eier"],["1","Tomate"],["1 TL","Butter"],["1 Scheibe","Brot"]],
+ s:["Tomate häuten und fein würfeln.","Eier verquirlen.","In der Pfanne in Butter langsam stocken lassen, bis keine flüssigen Stellen mehr da sind.","Mit Brotstreifen servieren."]},
+{n:"Kichererbsen-Curry",e:"🍛",m:12,t:30,typ:"Familie",d:"Mild, cremig, vegetarisch.",
+ i:[["1 Glas","Kichererbsen"],["1","Süßkartoffel"],["200 ml","Kokosmilch"],["1","Tomate"],["150 g","Reis"],["1 Prise","Kurkuma"]],
+ s:["Süßkartoffel würfeln und mit Tomate, Kokosmilch und Kurkuma 15 Min. köcheln.","Abgespülte Kichererbsen dazugeben und 5 Min. mitkochen.","Reis kochen.","Für Kinder Kichererbsen zerdrücken oder halbieren."]},
+{n:"Bananen-Joghurt-Eis",e:"🍨",m:12,t:10,typ:"Snack",d:"Sommer-Snack ganz ohne Zucker.",
+ i:[["2","Bananen, gefroren"],["100 g","Naturjoghurt"],["50 g","Himbeeren"]],
+ s:["Bananen in Scheiben schneiden und mindestens 4 Std. einfrieren.","Mit Joghurt und Himbeeren cremig pürieren.","Sofort als Softeis servieren."]},
 ];
+const AGES=[["Alle",0,99],["5–6 Mon.",0,6],["7–9 Mon.",7,9],["10–12 Mon.",10,11],["ab 1 Jahr",12,99]];
 
 /* ---------- Zustand & Speicher ---------- */
 const LS="beikost-v1";
@@ -416,6 +554,334 @@ function moBadge(f){
   const a=ageMonths();const later=a!=null&&f.m>a;
   return `<div class="mo ${later?"later":f.m>=12?"later":""}">${f.m}+<small>Monate</small></div>`;
 }
+
+/* ---------- Skizzen-Zeichnungen (handgezeichneter Stil) ---------- */
+const INK="#3b342e", HAND="Noteworthy,'Chalkboard SE','Comic Sans MS','Segoe Print',cursive";
+const LINECOL=new Set(["#3b342e","#7DB35F","#8a6a3a","#6b4b2a","#E07A5F","#C9A040","#5b4a2a"]);
+const P=(d,f="none",w=2.2)=>{const line=LINECOL.has(f)&&!/Z\s*$/i.test(d);return `<path d="${d}" fill="${line?"none":f}" stroke="${line?f:INK}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`};
+const Cc=(x,y,r,f="none",w=2.2)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" stroke="${INK}" stroke-width="${w}"/>`;
+const El=(x,y,rx,ry,f="none",w=2.2,rot=0)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${f}" stroke="${INK}" stroke-width="${w}"${rot?` transform="rotate(${rot} ${x} ${y})"`:""}/>`;
+const Rc=(x,y,w,h,r,f="none",sw=2.2)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" stroke="${INK}" stroke-width="${sw}"/>`;
+const Tx=(x,y,t,s=14,o={})=>`<text x="${x}" y="${y}" font-family="${HAND}" font-size="${s}" fill="${o.c||INK}" text-anchor="${o.a||"middle"}"${o.w?` font-weight="${o.w}"`:""}${o.r?` transform="rotate(${o.r} ${x} ${y})"`:""}>${esc(t)}</text>`;
+const G=(x,y,inner,s=1,r=0)=>`<g transform="translate(${x} ${y})${r?` rotate(${r})`:""}${s!==1?` scale(${s})`:""}">${inner}</g>`;
+const GREEN="#7DB35F";
+
+const ICONS={
+ carrot:(c="#F4A04A")=>G(0,0,P("M-7,-13 Q0,-17 7,-13 Q6,6 0,26 Q-6,6 -7,-13Z",c)+P("M-3,-6 L1,-6 M-2,4 L2,4 M-1,13 L1,13",INK,1.6)+P("M-2,-14 Q-9,-24 -6,-30 M1,-15 Q1,-26 4,-31 M4,-14 Q11,-22 14,-25",GREEN,2.2),1,-28),
+ parsnip:()=>ICONS.carrot("#F3E6C4"),
+ sweetpotato:()=>G(0,0,P("M-26,2 Q-18,-14 4,-12 Q22,-10 26,0 Q20,12 2,13 Q-18,14 -26,2Z","#C8664A")+P("M-12,-4 L-9,-1 M4,2 L7,5",INK,1.6),1,-12),
+ potato:()=>P("M-23,-3 Q-21,-17 -3,-16 Q16,-20 23,-5 Q27,12 6,16 Q-19,20 -23,-3Z","#E9C98A")+P("M-10,-5 q2,-2 4,0 M7,4 q2,-2 4,0 M-3,8 q2,-2 4,0",INK,1.5),
+ pumpkin:(c="#F08A3C")=>El(0,5,24,18,c)+P("M0,-12 Q-12,5 0,23 M0,-12 Q12,5 0,23",INK,1.8)+P("M0,-12 Q1,-21 7,-24","#8a6a3a",3),
+ broccoli:(c="#6FA35A",s="#A9CB8A")=>P("M-6,4 L-4,25 L5,25 L6,4Z",s)+Cc(-12,-2,10,c)+Cc(12,-2,10,c)+Cc(0,-13,12,c)+Cc(0,2,9,c),
+ cauliflower:()=>ICONS.broccoli("#F6EFD9","#A9CB8A"),
+ zucchini:(c="#6FA35A")=>G(0,0,P("M-27,-6 Q0,-12 26,-4 Q30,2 25,7 Q0,13 -26,6 Q-31,0 -27,-6Z",c)+P("M-15,-3 L10,-2 M-12,3 L14,3",INK,1.3)+P("M26,-3 L32,-6","#5b4a2a",3),1,-18),
+ cucumber:()=>ICONS.zucchini("#8FC874"),
+ tomato:(c="#E2533A")=>Cc(0,3,19,c)+P("M0,-15 L-6,-20 M0,-15 L6,-20 M0,-15 L-9,-13 M0,-15 L9,-13 M0,-15 L0,-22",GREEN,2.4),
+ peas:()=>P("M-26,4 Q-20,-12 0,-12 Q20,-12 26,4 Q0,0 -26,4Z","#8FC874")+Cc(-12,-3,5,"#B7DC8F",1.6)+Cc(0,-4,5,"#B7DC8F",1.6)+Cc(12,-3,5,"#B7DC8F",1.6),
+ spinach:()=>G(-6,0,P("M0,24 Q-20,2 0,-24 Q20,2 0,24Z","#5E9E4B")+P("M0,20 L0,-18",INK,1.4),1,-14)+G(8,2,P("M0,22 Q-17,2 0,-22 Q17,2 0,22Z","#7DB35F")+P("M0,18 L0,-16",INK,1.4),1,16),
+ pepper:(c="#E2533A")=>P("M-18,-8 Q-20,-18 -8,-16 Q0,-12 8,-16 Q20,-18 18,-6 Q22,16 8,22 Q0,25 -8,22 Q-22,16 -18,-8Z",c)+P("M0,-14 Q0,-22 5,-25",GREEN,3)+P("M0,-12 L0,18",INK,1.2),
+ avocado:()=>P("M0,-24 Q12,-22 13,-4 Q20,14 0,24 Q-20,14 -13,-4 Q-12,-22 0,-24Z","#3E6B2E")+P("M0,-18 Q8,-16 9,-3 Q14,11 0,18 Q-14,11 -9,-3 Q-8,-16 0,-18Z","#D6E69E",1.4)+Cc(0,6,7,"#9A6438"),
+ beet:()=>Cc(0,6,17,"#8E2A55")+P("M0,23 Q1,28 4,30",INK,2)+P("M-3,-10 Q-10,-22 -14,-26 M3,-10 Q8,-22 12,-26",GREEN,2.4),
+ corn:()=>G(0,0,El(0,0,10,24,"#F6D55C")+P("M-6,-14 L6,-14 M-8,-6 L8,-6 M-8,2 L8,2 M-7,10 L7,10",INK,1.2)+P("M-8,18 Q-18,0 -12,-22 M8,18 Q18,0 12,-22",GREEN,2.2),1,20),
+ apple:(c="#E2533A")=>P("M0,-12 Q-12,-20 -20,-8 Q-26,10 -10,22 Q0,26 10,22 Q26,10 20,-8 Q12,-20 0,-12Z",c)+P("M0,-12 Q0,-20 3,-24","#6b4b2a",2.6)+P("M3,-20 Q12,-26 16,-20 Q10,-15 3,-20Z",GREEN,1.8),
+ pear:()=>P("M0,-18 Q-8,-16 -8,-6 Q-20,4 -16,16 Q-10,25 0,25 Q10,25 16,16 Q20,4 8,-6 Q8,-16 0,-18Z","#C9D96A")+P("M0,-18 Q1,-25 4,-28","#6b4b2a",2.6),
+ banana:()=>G(0,0,P("M-26,-8 Q-6,18 24,-6 Q26,-10 24,-12 Q-2,6 -22,-14 Q-26,-14 -26,-8Z","#F6D55C")+P("M-26,-8 L-29,-12 M24,-12 L26,-15",INK,3)+P("M-14,-3 Q0,6 14,-2",INK,1.2),1,8),
+ berries:(c="#4A5AA8")=>Cc(-9,4,9,c)+Cc(9,4,9,c)+Cc(0,-9,9,c)+P("M-11,2 l4,0 M7,2 l4,0 M-2,-11 l4,0",INK,1.4),
+ strawberry:()=>P("M0,24 Q-20,8 -18,-6 Q-14,-14 0,-12 Q14,-14 18,-6 Q20,8 0,24Z","#E2533A")+P("M-8,-13 L0,-20 L8,-13 M0,-20 L0,-26",GREEN,2.6)+P("M-7,0 l0,1 M5,-3 l0,1 M0,8 l0,1 M8,6 l0,1 M-6,12 l0,1",INK,2.4),
+ citrus:(c="#F4A04A")=>Cc(0,3,19,c)+P("M-8,-4 l0,1 M6,-6 l0,1 M3,8 l0,1 M-5,11 l0,1 M10,4 l0,1",INK,2)+P("M0,-16 Q8,-26 16,-20 Q8,-14 0,-16Z",GREEN,1.8),
+ lemon:()=>El(0,0,22,15,"#F6E05C",2.2,-15)+P("M18,-12 l5,-3 M-18,12 l-5,3",INK,2),
+ plum:(c="#7B4A8E")=>El(0,3,17,20,c)+P("M0,-16 Q1,-22 4,-24","#6b4b2a",2.6)+P("M-2,-12 Q-6,4 -2,20",INK,1.2),
+ mango:()=>P("M-18,8 Q-24,-14 -2,-20 Q22,-22 22,0 Q20,22 -2,22 Q-14,22 -18,8Z","#F6B73C")+P("M18,-14 Q24,-22 28,-20","#6b4b2a",2.4),
+ egg:(n=1)=>{n=Math.max(1,Math.min(3,n));const xs=n===1?[0]:n===2?[-10,10]:[-16,0,16];return xs.map((x,i)=>El(x,i===1&&n===3?-6:4,10,13,"#FFF8E7")).join("")},
+ milk:()=>P("M-15,-12 L-15,26 L15,26 L15,-12 L8,-24 L-8,-24 Z","#FFFFFF")+P("M-15,-12 L15,-12 M-8,-24 L-8,-28 L8,-28 L8,-24",INK,2)+Rc(-11,-2,22,16,3,"#BFD9F2",1.4)+Tx(0,10,"Milch",9),
+ jug:(c="#EAF4FB")=>P("M-16,-20 L16,-20 L13,24 L-13,24 Z","#FFFFFF")+P("M-15,-4 L15,-4 L13,24 L-13,24 Z",c,1.2)+P("M16,-14 Q28,-12 26,4 Q24,12 14,12",INK,2.2)+P("M-13,-12 l5,0 M-13,-2 l5,0 M-12,8 l5,0 M-12,16 l5,0",INK,1.3),
+ water:()=>ICONS.jug("#CFE6F7"),
+ juice:(c="#F6B73C")=>P("M-11,-18 L11,-18 L8,22 L-8,22 Z","#FFFFFF")+P("M-10,-6 L10,-6 L8,22 L-8,22 Z",c,1.2)+Cc(10,-18,6,"#F4A04A",1.6),
+ yogurt:(l="Joghurt")=>P("M-18,-12 L18,-12 L13,22 L-13,22 Z","#FFFFFF")+El(0,-12,18,5,"#F4EEDB")+Tx(0,8,l,l.length>7?8:10),
+ cheese:()=>P("M-22,14 L22,14 L22,-2 L-22,-16 Z","#F6D55C")+P("M-22,-16 L-14,-18 L22,-2",INK,2)+Cc(-8,4,3,"#E8C23D",1.4)+Cc(10,6,2.5,"#E8C23D",1.4)+Cc(-14,-6,2,"#E8C23D",1.4),
+ butter:()=>P("M-22,-8 L14,-8 L22,-2 L22,14 L-14,14 L-22,8 Z","#FCE9A0")+P("M14,-8 L14,8 L22,14 M14,8 L-22,8",INK,1.6)+Tx(-4,4,"Butter",9),
+ oil:()=>P("M-5,-28 L5,-28 L5,-20 Q14,-14 14,-4 L14,24 L-14,24 L-14,-4 Q-14,-14 -5,-20 Z","#F2D15C")+Rc(-10,0,20,13,2,"#FFFFFF",1.4)+Tx(0,10,"Öl",10),
+ meat:(c="#D9776E")=>P("M-24,0 Q-24,-16 -6,-16 Q14,-18 22,-8 Q28,4 18,14 Q4,22 -12,16 Q-24,12 -24,0Z",c)+P("M-18,-2 Q-24,-12 -6,-12 Q12,-14 18,-6 Q24,4 16,10",INK,1.2)+P("M-10,0 q6,-5 12,0 M2,8 q5,-3 10,0",INK,1.3)+El(-3,2,5,4,"#F7E3D6",1.4),
+ chicken:()=>G(0,0,P("M-6,-4 Q-20,-22 -2,-24 Q18,-24 10,-6 Q8,2 4,6 L-2,0 Z","#E9B477")+P("M4,6 L14,18 M-2,0 L8,12",INK,2.2)+Cc(15,21,3.5,"#FFF8E7",1.8)+Cc(10,16,3.5,"#FFF8E7",1.8),1,-10),
+ fish:(c="#F49A7A")=>P("M-24,0 Q-6,-16 14,-4 L26,-14 L24,0 L26,14 L14,4 Q-6,16 -24,0Z",c)+Cc(-12,-2,2,INK,1)+P("M-4,-8 Q-1,0 -4,8",INK,1.3),
+ whitefish:()=>ICONS.fish("#EDE6DA"),
+ tofu:()=>P("M-18,-6 L-6,-16 L20,-16 L20,8 L8,18 L-18,18 Z","#F4EEDB")+P("M-18,-6 L8,-6 L20,-16 M8,-6 L8,18",INK,1.8),
+ jar:(l="Mus",c="#C98B54")=>Rc(-15,-14,30,38,6,"#FFFFFF")+Rc(-14,-1,28,24,5,c,1.2)+Rc(-17,-22,34,9,3,"#E07A5F")+Rc(-12,2,24,12,2,"#FFFFFF",1.2)+Tx(0,11,l,l.length>8?6.5:l.length>5?8:9),
+ can:(l="Dose",c="#FFFFFF")=>El(0,-18,16,5,"#DDDDDD")+P("M-16,-18 L-16,20 Q0,27 16,20 L16,-18",c)+Rc(-14,-6,28,14,2,"#FFFFFF",1.2)+Tx(0,4,l,l.length>6?7.5:9),
+ bag:(l="Mehl")=>P("M-18,-20 L18,-20 L20,24 L-20,24 Z","#F7F0DC")+P("M-18,-20 Q0,-26 18,-20",INK,1.6)+Rc(-14,-12,28,13,2,"#FFFFFF",1.3)+Tx(0,-2,l,l.length>8?6.5:l.length>6?7.5:9)+P("M0,20 L0,6 M0,10 L-5,6 M0,10 L5,6 M0,15 L-5,11 M0,15 L5,11","#C9A040",1.5),
+ pinch:(l="Zimt")=>Rc(-11,-12,22,32,4,"#FFFFFF")+Rc(-12,-20,24,9,3,"#C98B54")+Tx(0,8,l,l.length>6?6.5:8),
+ bread:()=>P("M-20,22 L-20,-4 Q-26,-22 0,-22 Q26,-22 20,-4 L20,22 Z","#F3D49B",2.4)+P("M-15,18 L-15,-4 Q-19,-16 0,-16 Q19,-16 15,-4 L15,18",INK,1.2),
+ herb:()=>P("M0,26 L0,-20",GREEN,2.2)+G(0,0,El(-7,-6,7,4,"#7DB35F",1.8,-30)+El(7,-12,7,4,"#7DB35F",1.8,30)+El(-7,6,7,4,"#7DB35F",1.8,-30)+El(7,0,7,4,"#7DB35F",1.8,30)+El(0,-21,4,7,"#7DB35F",1.8)),
+ blob:(l="")=>El(0,4,22,18,"#F4EEDB")+(l?Tx(0,8,l,9):""),
+};
+const ICON_RULES=[
+ [/süßkartoffel/,"sweetpotato"],[/kartoffel/,"potato"],[/karotte|möhre/,"carrot"],[/pastinake/,"parsnip"],[/kürbis|hokkaido/,"pumpkin"],
+ [/brokkoli/,"broccoli"],[/blumenkohl/,"cauliflower"],[/zucchini/,"zucchini"],[/gurke/,"cucumber"],[/passierte tomate|tomatenmark/,"can:Tomaten:#E2533A"],
+ [/tomate/,"tomato"],[/kichererbse/,"can:Kichererbsen"],[/erbse/,"peas"],[/spinat/,"spinach"],[/paprika edelsüß|paprikapulver/,"pinch:Paprika"],[/paprika/,"pepper"],
+ [/avocado/,"avocado"],[/rote bete/,"beet"],[/mais(?!grieß)/,"corn"],
+ [/apfelmus|obstmus|birnenmus/,"jar:Obstmus:#F3DB8A"],[/pflaumenmus/,"jar:Pflaume:#7B4A8E"],[/orangensaft|apfelsaft/,"juice"],[/zitronensaft|zitrone/,"lemon"],
+ [/apfel|äpfel/,"apple"],[/birne/,"pear"],[/banane/,"banana"],[/heidelbeer|blaubeer/,"berries:#4A5AA8"],[/himbeer/,"berries:#D9476A"],[/kirsche/,"berries:#9E2235"],
+ [/erdbeer/,"strawberry"],[/beere/,"berries:#9E4A8E"],[/orange|mandarine/,"citrus"],[/mango/,"mango"],[/pflaume|dattel/,"plum"],[/pfirsich|nektarine|aprikose/,"citrus:#F6B07A"],
+ [/grieß/,"bag:Grieß"],[/haferflocken|hafer/,"bag:Hafer"],[/hirse/,"bag:Hirse"],[/milchreis/,"bag:Milchreis"],[/risottoreis|(^|\s)reis/,"bag:Reis"],
+ [/couscous/,"bag:Couscous"],[/quinoa/,"bag:Quinoa"],[/polenta|maisgrieß/,"bag:Polenta"],[/mehl/,"bag:Mehl"],[/nudel|fusilli|spaghetti|pasta/,"bag:Nudeln"],
+ [/linsen/,"bag:Linsen"],[/brösel|paniermehl/,"bag:Brösel"],[/backpulver/,"pinch:Backpulver"],[/zimt/,"pinch:Zimt"],[/kurkuma/,"pinch:Kurkuma"],
+ [/kräuter|petersilie|schnittlauch/,"herb"],[/tahin/,"jar:Tahin:#D9B98A"],[/mandelmus|nussmus|erdnussmus|cashewmus/,"jar:Nussmus"],[/kokosmilch/,"can:Kokos"],
+ [/joghurt/,"yogurt:Joghurt"],[/quark/,"yogurt:Quark"],[/frischkäse/,"yogurt:Frischkäse"],[/käse|parmesan|mozzarella/,"cheese"],[/butter/,"butter"],
+ [/sahne|milch/,"milk"],[/(^|\s)ei(er)?(\s|$|,)/,"egg"],[/hack|rind|schwein/,"meat"],[/hähnchen|pute|huhn/,"chicken"],[/lachs(?!filet weiß)/,"fish"],[/seelachs|kabeljau|fisch/,"whitefish"],
+ [/tofu/,"tofu"],[/öl/,"oil"],[/wasser/,"water"],[/brot|toast/,"bread"],[/leinsamen|chia/,"pinch:Samen"],
+];
+function iconFor(name,amount){
+ const n=(" "+name+" ").toLowerCase();
+ let key="blob:"+name.split(" ")[0].slice(0,9);
+ for(const [re,k] of ICON_RULES){if(re.test(n)){key=k;break}}
+ if(/seelachs/.test(n))key="whitefish";
+ const [k,a,b]=key.split(":");
+ const f=ICONS[k]||ICONS.blob;
+ if(k==="egg"){const c=parseInt(amount)||1;return f(c)}
+ return f(a,b);
+}
+const ICON_COLOR={carrot:"#F4A04A",parsnip:"#EBD9A8",sweetpotato:"#E8935A",potato:"#E9C98A",pumpkin:"#F08A3C",broccoli:"#7DB35F",cauliflower:"#EFE6CC",zucchini:"#8FC874",tomato:"#E2533A",peas:"#8FC874",spinach:"#5E9E4B",pepper:"#E2533A",avocado:"#A9C46A",beet:"#A23A66",apple:"#F3DB8A",pear:"#D7E08A",banana:"#F6D55C",berries:"#7B5AA8",strawberry:"#E2533A",citrus:"#F4A04A",mango:"#F6B73C",plum:"#7B4A8E",meat:"#B5704F",chicken:"#E9B477",fish:"#F49A7A",whitefish:"#EDE6DA",egg:"#F6D55C"};
+function colorFor(r){
+ for(const [,n] of r.i){const s=(" "+n+" ").toLowerCase();for(const [re,k] of ICON_RULES){if(re.test(s)){const c=ICON_COLOR[k.split(":")[0]];if(c)return c;break}}}
+ return "#E9C98A";
+}
+
+/* Töpfe und Schüsseln (Mitte) */
+const VESSELS={
+ pot:()=>P("M-46,-22 L46,-22 L42,30 Q40,40 28,40 L-28,40 Q-40,40 -42,30 Z","#FFFFFF",2.6)+P("M-50,-26 L50,-26",INK,3)+P("M-46,-10 Q-60,-10 -58,0 Q-56,6 -44,4 M46,-10 Q60,-10 58,0 Q56,6 44,4",INK,2.4)+P("M8,-44 L-6,-14 M8,-44 Q14,-50 18,-46 Q20,-42 12,-40",INK,2.4),
+ bowl:()=>P("M-48,-14 Q-46,32 0,36 Q46,32 48,-14 Z","#FFFFFF",2.6)+El(0,-14,48,9,"#FFFFFF",2.6)+P("M-12,38 L12,38",INK,3)+P("M14,-46 L-4,-12",INK,2.4)+El(-6,-8,6,4,"#FFFFFF",2),
+ pan:()=>El(-6,0,42,22,"#FFFFFF",2.6)+El(-6,-3,34,15,"#F7F4EC",1.6)+P("M34,-4 L66,-16 Q70,-17 70,-12 L38,4",INK,2.6),
+};
+/* Geräte & Schritte (unten links) */
+const TOOLS={
+ puree:["pürieren",()=>Rc(-9,-34,18,40,7,"#FFFFFF")+Rc(-5,6,10,14,3,"#DDDDDD")+P("M-12,24 Q0,30 12,24",INK,2.2)+Cc(0,-20,3,"#E07A5F",1.4)+P("M0,-34 Q6,-44 14,-42",INK,2)],
+ oven:["backen",()=>Rc(-30,-24,60,50,6,"#FFFFFF")+Rc(-22,-12,44,30,4,"#FCEBC5")+P("M-14,8 Q0,2 14,8",INK,1.6)+Cc(-16,-18,2.5,INK,1)+Cc(-6,-18,2.5,INK,1)+P("M-16,-6 L16,-6",INK,2)],
+ pan:["braten",()=>El(-4,6,26,10,"#FFFFFF")+P("M20,4 L40,-4",INK,2.6)+P("M-14,24 q3,-8 0,-12 M-4,24 q3,-8 0,-12 M6,24 q3,-8 0,-12","#E07A5F",2)+El(-12,3,5,3,"#E9B868",1.3)+El(-2,5,5,3,"#8FC874",1.3)+El(7,2,5,3,"#E9B868",1.3)],
+ cook:["kochen",()=>Rc(-24,-10,48,32,6,"#FFFFFF")+P("M-28,-12 L28,-12",INK,2.6)+P("M-10,-18 q-4,-8 0,-14 M0,-18 q-4,-8 0,-14 M10,-18 q-4,-8 0,-14",INK,1.6)+P("M-12,30 q3,-6 0,-8 M0,30 q3,-6 0,-8 M12,30 q3,-6 0,-8","#E07A5F",2)],
+ steam:["dämpfen",()=>Rc(-24,-6,48,30,6,"#FFFFFF")+P("M-24,4 L24,4",INK,1.4)+P("M-20,4 l0,-1 M-10,4 l0,-1 M0,4 l0,-1",INK,1.4)+P("M-28,-8 L28,-8",INK,2.6)+P("M-10,-14 q-4,-8 0,-14 M0,-14 q-4,-8 0,-14 M10,-14 q-4,-8 0,-14",INK,1.6)],
+ fork:["zerdrücken",()=>G(0,0,P("M0,30 L0,-6 M-8,-6 L8,-6 M-8,-6 L-8,-26 M-3,-6 L-3,-26 M3,-6 L3,-26 M8,-6 L8,-26",INK,2.4),1,20)],
+ mix:["verrühren",()=>P("M-26,-6 Q-24,24 0,26 Q24,24 26,-6 Z","#FFFFFF")+El(0,-6,26,6,"#FFFFFF")+P("M10,-30 L-4,-4",INK,2.4)+P("M-12,8 q12,8 24,0",INK,1.4)],
+ cool:["kühlen",()=>Rc(-20,-28,40,56,6,"#EAF4FB")+P("M-20,-6 L20,-6 M12,-20 L12,-12 M12,4 L12,14",INK,2.2)+P("M-6,-20 l0,8 M-10,-16 l8,0","#5B9BD5",1.6)],
+ waffle:["Waffeleisen",()=>Rc(-28,-6,56,26,8,"#FFFFFF")+P("M-24,-6 Q-24,-20 0,-22 Q24,-20 24,-6",INK,2.4)+P("M-30,8 L-38,8 M30,8 L38,8",INK,2.6)+P("M-12,4 l24,0 M-12,12 l24,0",INK,1.3)],
+};
+/* Fertige Gerichte (unten rechts) */
+const plate=(w=38)=>El(0,8,w,12,"#FFFFFF",2.4)+El(0,7,w-8,8,"none",1.2);
+const DISHES={
+ mash:c=>P("M-34,-4 Q-32,28 0,30 Q32,28 34,-4 Z","#FFFFFF",2.4)+P("M-28,-4 Q-20,-20 0,-18 Q20,-20 28,-4 Z",c,1.8)+P("M-8,-10 q8,-6 14,0",INK,1.4)+P("M18,-28 L6,-10",INK,2.4)+El(4,-8,5,3,"#FFFFFF",1.8),
+ soup:c=>P("M-34,-4 Q-32,28 0,30 Q32,28 34,-4 Z","#FFFFFF",2.4)+El(0,-4,34,7,c,2.2)+P("M-10,-4 l0,0 M8,-6 l0,0",INK,3)+P("M-12,-6 q3,-2 6,0",GREEN,2),
+ porridge:c=>P("M-34,-4 Q-32,28 0,30 Q32,28 34,-4 Z","#FFFFFF",2.4)+El(0,-4,34,7,"#F3E6C4",2.2)+Cc(-12,-6,4.5,c,1.6)+Cc(-2,-3,4.5,c,1.6)+Cc(10,-6,4.5,c,1.6)+Cc(4,-8,3,"#7DB35F",1.2),
+ sticks:c=>plate()+G(-14,0,Rc(-4,-20,9,30,4,c,1.9),1,-18)+G(0,-2,Rc(-4,-20,9,30,4,c,1.9),1,0)+G(14,0,Rc(-4,-20,9,30,4,c,1.9),1,18),
+ wedges:c=>plate()+G(-14,0,P("M-12,4 Q0,-16 12,4 Z",c,1.9),1,-12)+G(2,-4,P("M-12,4 Q0,-16 12,4 Z",c,1.9),1,6)+G(16,2,P("M-10,4 Q0,-14 10,4 Z","#F4A04A",1.9),1,24),
+ pancakes:c=>plate()+El(0,2,26,7,"#E9B868")+El(0,-6,26,7,"#EFC57A")+El(0,-14,26,7,"#F3D08E")+Cc(-6,-16,3.5,c,1.4)+Cc(5,-15,3.5,c,1.4),
+ discs:c=>plate()+El(-14,0,11,6,c,1.9)+El(12,2,11,6,c,1.9)+El(0,-8,11,6,c,1.9),
+ balls:c=>plate()+Cc(-13,0,8,c,1.9)+Cc(4,2,8,c,1.9)+Cc(-4,-11,8,c,1.9)+Cc(16,-8,7,c,1.9)+P("M-15,-3 q2,-2 4,-1 M2,-1 q2,-2 4,-1",INK,1.2),
+ muffins:c=>G(-14,0,P("M-11,0 L-8,18 L8,18 L11,0 Z","#FFFFFF")+P("M-6,0 L-4,18 M0,0 L0,18 M6,0 L4,18",INK,1)+P("M-13,0 Q-14,-14 0,-14 Q14,-14 13,0 Z",c,1.9))+G(14,4,P("M-11,0 L-8,18 L8,18 L11,0 Z","#FFFFFF")+P("M-6,0 L-4,18 M0,0 L0,18 M6,0 L4,18",INK,1)+P("M-13,0 Q-14,-14 0,-14 Q14,-14 13,0 Z",c,1.9)),
+ pasta:c=>plate()+P("M-22,4 Q-24,-12 -6,-14 Q12,-16 22,-4 Q24,8 6,10 Q-16,12 -22,4Z","#F6E2A0",1.8)+P("M-14,0 q4,-6 8,0 q4,6 8,0 q4,-6 8,0 M-10,-6 q4,-4 8,0 q4,4 8,0",INK,1.2)+P("M-8,2 Q0,-6 10,0 Q4,6 -8,2Z",c,1.4),
+ strips:c=>plate()+G(-12,-2,Rc(-5,-14,10,24,2,c,1.9),1,-14)+G(2,-4,Rc(-5,-14,10,24,2,c,1.9),1,4)+G(16,-2,Rc(-5,-14,10,24,2,c,1.9),1,18),
+ eggs:c=>plate()+P("M-20,2 Q-22,-10 -8,-10 Q0,-16 10,-10 Q22,-10 20,2 Q14,10 0,8 Q-14,10 -20,2Z","#F6D55C",1.8)+Cc(-6,-3,3,c,1.2)+Cc(6,-1,3,c,1.2),
+ waffles:()=>plate()+G(-10,-4,P("M0,10 Q-16,0 -14,-8 Q-12,-16 -4,-14 Q0,-12 0,-8 Q0,-12 4,-14 Q12,-16 14,-8 Q16,0 0,10Z","#EFC57A",1.9)+P("M-8,-8 L6,6 M-2,-12 L10,0 M8,-10 L-6,4 M2,-12 L-10,0",INK,1),1,-14)+G(12,0,P("M0,10 Q-16,0 -14,-8 Q-12,-16 -4,-14 Q0,-12 0,-8 Q0,-12 4,-14 Q12,-16 14,-8 Q16,0 0,10Z","#F3D08E",1.9)+P("M-8,-8 L6,6 M-2,-12 L10,0 M8,-10 L-6,4 M2,-12 L-10,0",INK,1),1,16),
+ bowl:c=>DISHES.porridge(c),
+};
+function guessTool(r){
+ const t=((r.s||[]).join(" ")+" "+r.n).toLowerCase();
+ if(r.tool)return r.tool;
+ if(/waffel/.test(t))return "waffle";
+ if(/über nacht|kühlschrank stellen|einfrieren/.test(t)&&!/koch/.test(t))return "cool";
+ if(/ofen|backen|backblech/.test(t)&&!/pfanne/.test(t))return "oven";
+ if(/pfanne|braten|ausbacken/.test(t))return "pan";
+ if(/pürier|mixen|mixer/.test(t))return "puree";
+ if(/dämpf/.test(t))return "steam";
+ if(/zerdrück/.test(t)&&!/koch/.test(t))return "fork";
+ if(/koch|köchel|garen|quellen|aufkochen/.test(t))return "cook";
+ return "mix";
+}
+function guessDish(r){
+ if(r.dish)return r.dish;
+ const n=r.n.toLowerCase();
+ if(/waffel/.test(n))return "waffles";
+ if(/pancake|pfannkuchen/.test(n))return "pancakes";
+ if(/muffin/.test(n))return "muffins";
+ if(/taler|puffer|kekse|cookie|plätzchen/.test(n))return "discs";
+ if(/bällchen|frikadell|klößchen/.test(n))return "balls";
+ if(/pommes|sticks|stäbchen|schnitten/.test(n))return "sticks";
+ if(/streifen|toast/.test(n))return "strips";
+ if(/spalten|ofengemüse/.test(n))return "wedges";
+ if(/nudel|pasta|spaghetti|bolognese|lasagne/.test(n))return "pasta";
+ if(/suppe/.test(n))return "soup";
+ if(/rührei|omelett/.test(n))return "eggs";
+ if(/brei|mus\b|hummus|dal/.test(n)||r.typ==="Brei")return "mash";
+ return "porridge";
+}
+function shortName(s){s=s.replace(/\(.*?\)/g,"").replace(/,.*$/,"").trim();const w=s.split(/\s+/);let o=w[0];if(w[1]&&(o+" "+w[1]).length<=13)o+=" "+w[1];return o.length>13?o.slice(0,12)+"…":o}
+function arrow(x1,y1,x2,y2,bend=.18){
+ const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;
+ const cx=mx-dy*bend,cy=my+dx*bend;
+ const ang=Math.atan2(y2-cy,x2-cx),a1=ang+Math.PI-0.45,a2=ang+Math.PI+0.45;
+ const h=9;
+ return P(`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`,"none",1.9)+P(`M${x2+h*Math.cos(a1)},${y2+h*Math.sin(a1)} L${x2},${y2} L${x2+h*Math.cos(a2)},${y2+h*Math.sin(a2)}`,"none",1.9);
+}
+function badge(x,y,n){return Cc(x,y,10,"#F6C9C1",1.6)+Tx(x,y+5,String(n),14,{c:"#B24A3A",w:700})}
+function marker(x,y,t,s=15){const w=Math.max(30,t.length*s*0.52+10);return `<rect x="${x-w/2}" y="${y-s+1}" width="${w}" height="${s+5}" rx="6" fill="#FFF09A" opacity=".85" transform="rotate(-2 ${x} ${y})"/>`+Tx(x,y,t,s)}
+function dots(w,h){return `<rect x="6" y="6" width="${w-12}" height="${h-12}" rx="16" fill="url(#skDots)"/>`}
+
+/* Ganzes Rezeptbild */
+function recipeSketch(r){
+ const W=360,H=570,cx=180,cy=228;
+ const ings=(r.i||[]).slice(0,7);
+ const SL={TL:[62,128],T:[180,112],TR:[298,128],R:[312,250],BR:[300,368],BL:[60,368],L:[48,250]};
+ const ORD={1:["L"],2:["TL","TR"],3:["TL","TR","BR"],4:["TL","TR","BR","BL"],5:["TL","TR","R","BR","BL"],6:["TL","TR","R","BR","BL","L"],7:["TL","T","TR","R","BR","BL","L"]}[ings.length]||[];
+ const tool=guessTool(r),dish=guessDish(r),col=colorFor(r);
+ const vessel=["pan"].includes(tool)&&!["pancakes","discs","waffles","balls"].includes(dish)?"pan":["oven","waffle","fork","mix","cool"].includes(tool)||["pancakes","discs","waffles","balls","muffins"].includes(dish)?"bowl":"pot";
+ let draw="",text="";
+ ings.forEach((ing,k)=>{
+  const [x,y]=SL[ORD[k]];
+  draw+=G(x,y,iconFor(ing[1],ing[0]),.95);
+  const dx=cx-x,dy=cy-y,d=Math.hypot(dx,dy),ux=dx/d,uy=dy/d;
+  const sx=x+ux*34,sy=y+uy*34,ex=cx-ux*62,ey=cy-uy*50;
+  draw+=arrow(sx,sy,ex,ey,ORD[k]==="T"?0:(x<cx?-.16:.16));
+  text+=badge(sx+(ex-sx)*.45-uy*14*(x<cx?-1:1),sy+(ey-sy)*.45+ux*14*(x<cx?-1:1),k+1);
+  const top=ORD[k]==="T";
+  const lx=top?x+42:x, ly=top?y-4:y+50;
+  if(ing[0])text+=marker(lx,ly,ing[0],15);
+  text+=Tx(lx,ing[0]?ly+17:ly,shortName(ing[1]),12.5,{a:top?"middle":"middle"});
+ });
+ draw+=G(cx,cy,VESSELS[vessel](),1);
+ const [tl,tf]=TOOLS[tool]||TOOLS.mix;
+ draw+=arrow(cx-16,cy+52,128,440,.1);
+ draw+=G(122,476,tf(),1);
+ draw+=arrow(162,486,212,486,-.15);
+ draw+=G(272,478,(DISHES[dish]||DISHES.porridge)(col),1.25);
+ text+=Tx(122,530,tl,17);
+ if((r.s||[]).length)text+=badge(152,350,ings.length+1);
+ text+=Tx(282,540,"Guten Appetit!",19,{c:"#5E9E4B",r:-9});
+ const title=r.n.length>22?r.n.replace(/-/g,"- ").split(" "):null;
+ let tt="";
+ if(!title)tt=Tx(cx,62,r.n,r.n.length>16?24:30,{c:"#9B4A2C"});
+ else{const words=r.n.split(" ");let a="",b="";words.forEach(w=>{if((a+" "+w).trim().length<=20&&!b)a=(a+" "+w).trim();else b=(b+" "+w).trim()});tt=Tx(cx,48,a,23,{c:"#9B4A2C"})+Tx(cx,76,b,23,{c:"#9B4A2C"})}
+ const ab=r.m?Tx(326,30,"ab "+r.m+" M.",12,{c:"#8a7f73",r:12}):"";
+ return `<svg viewBox="0 0 ${W} ${H}" class="sketch" role="img" aria-label="Zeichnung: ${esc(r.n)}">
+  <rect x="2" y="2" width="${W-4}" height="${H-4}" rx="18" fill="#FFFDF6" stroke="#E6DFD2" stroke-width="1.5"/>${dots(W,H)}
+  <g filter="url(#skWobble)">${draw}</g>${tt}${ab}${text}</svg>`;
+}
+function dishThumb(r){
+ const dish=guessDish(r),col=colorFor(r);
+ return `<svg viewBox="-46 -40 92 80" class="thumb sk"><g filter="url(#skWobble)">${G(0,4,(DISHES[dish]||DISHES.porridge)(col),1)}</g></svg>`;
+}
+function skDefs(){
+ if(document.getElementById("skDefs"))return;
+ const d=document.createElement("div");d.id="skDefs";
+ d.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="skWobble" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+  <pattern id="skDots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.1" fill="#CFC6B6"/></pattern></defs></svg>`;
+ document.body.appendChild(d);
+}
+
+/* Schnittformen für Lebensmittel */
+const FORMS=[
+ ["puree",/pürier|als brei|im brei|ins? (den )?brei|im mittagsbrei|als soße|cremig/,"püriert",c=>P("M-24,-2 Q-22,20 0,22 Q22,20 24,-2 Z","#FFFFFF")+El(0,-2,24,6,c,2)+P("M-8,-3 q6,-4 12,0",INK,1.3)+P("M14,-22 L4,-4",INK,2)],
+ ["spread",/mus\b|mus \(|dünn (ver)?str|dünn auf|bestrichen|tahin|hummus/,"dünn gestrichen",c=>P("M-20,18 L-20,-2 Q-25,-18 0,-18 Q25,-18 20,-2 L20,18 Z","#F3D49B")+P("M-15,14 L-15,-2 Q-18,-12 0,-12 Q18,-12 15,-2 L15,14 Z",c,1.2)],
+ ["mash",/zerdrück|flach gedrückt|stampf|zerpflück/,"zerdrückt",c=>El(-4,6,20,9,c)+P("M-14,4 l20,0 M-12,9 l18,0",INK,1.2)+G(14,-6,P("M0,14 L0,-4 M-5,-4 L5,-4 M-5,-4 L-5,-16 M0,-4 L0,-16 M5,-4 L5,-16",INK,2),1,30)],
+ ["stick",/stick|streifen|stäbchen|lange .*stücke/,"Sticks",c=>G(-8,0,Rc(-4,-22,9,40,4,c,2),1,-12)+G(8,0,Rc(-4,-22,9,40,4,c,2),1,12)],
+ ["quarter",/viertel/,"längs geviertelt",c=>G(-12,0,El(0,0,5,13,c,1.8),1,-10)+G(-3,-2,El(0,0,5,13,c,1.8),1,-3)+G(6,-2,El(0,0,5,13,c,1.8),1,4)+G(15,0,El(0,0,5,13,c,1.8),1,11)],
+ ["half",/halbiert|hälften|halbe |halbe$/,"halbiert",c=>G(-9,0,P("M0,-14 Q-12,0 0,14 Z",c),1)+G(9,0,P("M0,-14 Q12,0 0,14 Z",c),1)],
+ ["grated",/gerieben|geraspelt|reiben|raspel|gehobelt/,"gerieben",c=>Rc(-24,-20,16,36,3,"#FFFFFF")+P("M-20,-12 l8,0 M-20,-4 l8,0 M-20,4 l8,0",INK,1.3)+P("M0,14 q4,-8 8,-2 M6,16 q4,-10 10,-4 M2,8 q6,-6 12,0 M10,10 q4,-6 10,0",c,2.6)],
+ ["ground",/gemahlen|mahlen/,"gemahlen",c=>P("M-22,16 Q-10,-10 0,-12 Q10,-10 22,16 Z",c,1.8)+P("M-8,6 l0,0 M4,0 l0,0 M8,10 l0,0 M-2,12 l0,0",INK,2.4)],
+ ["cubes",/würfel|kleine (weiche )?stücke|klein geschnitten|fein geschnitten|gehackt|kleine stücke|kleinen stücken|stücke\b/,"kleine Stücke",c=>[[-12,6],[4,8],[-4,-6],[12,-4]].map(([x,y])=>G(x,y,Rc(-6,-6,12,12,2,c,1.8),1,x*2)).join("")],
+ ["slices",/scheiben/,"Scheiben",c=>El(-12,2,10,10,c,1.8)+El(0,0,10,10,c,1.8)+El(12,-2,10,10,c,1.8)],
+ ["wedges",/spalten/,"Spalten",c=>G(-10,0,P("M0,-18 Q14,0 0,18 Q-6,0 0,-18Z",c),1,-8)+G(8,0,P("M0,-18 Q14,0 0,18 Q-6,0 0,-18Z",c),1,8)],
+ ["floret",/röschen/,"Röschen mit Stiel",c=>P("M-4,4 L-3,22 L4,22 L5,4Z","#A9CB8A",1.8)+Cc(-8,-2,8,c,1.8)+Cc(8,-2,8,c,1.8)+Cc(0,-10,9,c,1.8)],
+ ["discs",/taler|pancake|bällchen|omelett|rührei|frikadell|porridge/,"Taler & Co.",c=>El(-11,6,10,6,c,1.8)+El(9,8,10,6,c,1.8)+El(0,-4,10,6,c,1.8)],
+ ["whole",/\bganz\b|ganze beere|ganzen? /,"ganz",c=>Cc(0,2,14,c)],
+ ["family",/familienkost/,"wie Familienessen",c=>El(0,6,24,9,"#FFFFFF")+El(0,5,16,5,c,1.4)+P("M-30,-14 L-30,14 M-34,-14 L-34,-4 Q-30,0 -26,-4 L-26,-14 M30,-14 Q36,-6 30,2 L30,14",INK,1.8)],
+];
+function formsFor(text){
+ const t=(text||"").toLowerCase(),out=[];
+ for(const [k,re,lbl,fn] of FORMS){if(re.test(t)&&!out.some(o=>o[0]===k)&&!(k==="whole"&&/nie ganz|nicht ganz/.test(t)))out.push([k,lbl,fn]);if(out.length>=3)break}
+ return out;
+}
+function formCard(f,c){return `<div class="form"><svg viewBox="-34 -30 68 56"><g filter="url(#skWobble)">${f[2](c)}</g></svg><span>${esc(f[1])}</span></div>`}
+
+/* ---------- Zubereitungsideen, Farbe und Suchwort je Lebensmittel ---------- */
+const PREP={
+"Karotte":{c:"#F4A04A",x:["Als erster Brei: gedämpft und fein püriert, mit 1 TL Rapsöl.","Weich gedämpfte Sticks, fingerlang – zum Greifen ab dem Beikoststart.","Fein geraspelt im Porridge, in Pancakes oder Frikadellen versteckt.","Im Ofen mit etwas Öl weich gebacken – schmeckt süßer."]},
+"Kartoffel":{c:"#E9C98A",x:["Im Gemüsebrei als sättigende Basis.","Als Stampf mit etwas Butter und Gemüse.","Weich gebackene Spalten oder Taler zum Selbstessen.","Gerieben in Puffern (ab ca. 10 Monaten)."]},
+"Süßkartoffel":{c:"#E8935A",x:["Gedämpft und püriert – cremig ohne Zusatz.","Als weiche Ofen-Pommes.","Im Curry oder Eintopf weich gekocht.","Zerdrückt als Aufstrich auf Toaststreifen."]},
+"Kürbis (Hokkaido)":{c:"#F08A3C",k:"kürbis|hokkaido",x:["Gedämpft als Brei mit Kartoffel und Fleisch.","Weich gebackene Spalten – Schale vor dem Servieren entfernen.","Gegart und zerdrückt im Pancake-Teig.","Als Suppe mit etwas Milch püriert."]},
+"Pastinake":{c:"#EBD9A8",x:["Klassischer erster Brei – mild und süßlich.","Weich gedämpfte Sticks.","Im Ofen gebacken zusammen mit Karotten."]},
+"Zucchini":{c:"#8FC874",x:["Gedämpft und püriert, mischt sich gut mit Kartoffel.","Sticks mit Schale – die Schale gibt Halt beim Greifen.","Fein geraspelt in Bolognese, Risotto oder Muffins."]},
+"Brokkoli":{c:"#7DB35F",x:["Püriert im Mittagsbrei.","Große Röschen mit Stiel als natürlicher Griff.","Fein gehackt in Talern, Muffins oder Nudelsoße."]},
+"Blumenkohl":{c:"#EFE6CC",x:["Püriert mit Kartoffel – sehr mild.","Große, weiche Röschen zum Greifen.","Zerdrückt als Stampf mit etwas Butter."]},
+"Fenchel":{c:"#D9E6B8",x:["Fein püriert im Gemüsebrei, gut bei Blähungen bekannt.","Weich geschmort in Streifen.","Im Ofengemüse mitgebacken."]},
+"Erbsen":{c:"#8FC874",x:["Im Brei sehr fein püriert, evtl. durchs Sieb streichen.","Gegart und flach gedrückt zum Picken (Pinzettengriff üben).","Ganz im Risotto oder in der Reispfanne, wenn das Kind gut kaut."]},
+"Spinat":{c:"#5E9E4B",x:["Fein püriert im Brei – liefert Eisen.","Gehackt in Omelett, Pancakes oder Kartoffel-Talern.","In Nudelsoße mit Frischkäse."]},
+"Rote Bete":{c:"#A23A66",k:"rote bete",x:["Gegart und mit Kartoffel püriert – pinker Brei.","Weiche Sticks aus vorgegarter Bete ohne Essig.","Roh fein gerieben unter Joghurt (ab ca. 1 Jahr)."]},
+"Gurke":{c:"#8FC874",x:["Große, gekühlte Sticks zum Lutschen – angenehm beim Zahnen.","Dünne Scheiben oder kleine Würfel, sobald der Pinzettengriff klappt.","Zum Dippen in Hummus oder Joghurt."]},
+"Tomate":{c:"#E2533A",k:"tomat",x:["Gehäutet und püriert als Nudelsoße.","Kirschtomaten immer längs vierteln.","In Couscous, Risotto oder Rührei gewürfelt."]},
+"Paprika":{c:"#E2533A",k:"paprika(?! edelsüß)",x:["Geröstet, gehäutet und püriert.","Weich gebackene Streifen ohne Haut.","Fein gehackt in Ei-Muffins oder Reispfanne."]},
+"Grüne Bohnen":{c:"#6FA35A",k:"grüne bohnen",x:["Gut gegart und püriert im Brei.","Ganze, weich gekochte Bohnen zum Greifen.","Klein geschnitten im Eintopf."]},
+"Aubergine":{c:"#7B4A8E",x:["Im Ofen weich gebacken, Fruchtfleisch zerdrückt.","Weiche Würfel in Tomatensoße.","Als Dip püriert mit Tahin."]},
+"Avocado":{c:"#A9C46A",x:["Zerdrückt pur oder mit Banane.","Reife Spalten, in gemahlenen Haferflocken gewälzt – dann rutschen sie nicht.","Dünn auf Toaststreifen gestrichen."]},
+"Champignons":{c:"#D8C7A8",x:["Gut gegart, fein gehackt im Risotto.","Gebraten und klein geschnitten in Nudelsoße."]},
+"Mais":{c:"#F6D55C",k:"(^|\\s)mais",x:["Gekocht und püriert im Brei.","Gegarter Maiskolben zum Abnagen.","Zerdrückte Körner in Talern oder Muffins."]},
+"Blattsalat":{c:"#9BCB7A",x:["Zarte Blätter sehr fein geschnitten unter Gemüse.","Fein gehackt in Wraps oder Brotbelag."]},
+"Apfel":{c:"#F3DB8A",k:"apfel|äpfel",x:["Gedünstet als Apfelmus – süßt Brei und Pancakes.","Gedünstete Spalten zum Greifen.","Roh fein gerieben im Porridge oder Joghurt.","In Muffins und Pfannkuchen gebacken."]},
+"Birne":{c:"#D7E08A",x:["Im Getreide-Obst-Brei – mild und gut verträglich.","Sehr reif in großen Spalten.","Fein gerieben in Joghurt oder Porridge."]},
+"Banane":{c:"#F6D55C",x:["Zerdrückt pur oder mit Avocado.","Halbe Banane, untere Schale als Griff dran lassen.","Als Süße in Pancakes, Keksen, Muffins und Waffeln.","Gefroren püriert als Eis."]},
+"Heidelbeeren":{c:"#4A5AA8",k:"heidelbeer|blaubeer",x:["Zerdrückt im Porridge oder Joghurt.","Flach gedrückt zum Picken.","In Pancakes eingebacken."]},
+"Weintrauben":{c:"#A8C96A",k:"traube",x:["Kernlos, immer längs geviertelt.","Püriert im Joghurt."]},
+"Erdbeeren":{c:"#E2533A",k:"erdbeer",x:["Große ganze Beere zum Lutschen.","Zerdrückt im Quark oder Joghurt.","Klein geschnitten auf Pancakes."]},
+"Himbeeren":{c:"#D9476A",k:"himbeer",x:["Leicht zerdrückt im Quark.","Ganz zum Picken – sie zerfallen von selbst.","Püriert im Bananen-Eis."]},
+"Mango":{c:"#F6B73C",x:["Püriert pur oder im Getreidebrei.","Breite, reife Streifen zum Lutschen.","In Joghurt oder Overnight Oats."]},
+"Melone":{c:"#F7B58A",x:["Große Spalten ohne Kerne, Schale als Griff.","Kleine Würfel ab dem Pinzettengriff.","Gekühlt als Snack im Sommer."]},
+"Pfirsich / Nektarine":{c:"#F6B07A",k:"pfirsich|nektarine",x:["Reif halbiert und entsteint zum Lutschen.","Gedünstet und püriert.","In kleinen Stücken auf Joghurt."]},
+"Pflaume":{c:"#7B4A8E",k:"pflaume",x:["Gedünstet als Pflaumenmus im Grieß- oder Getreidebrei.","Reife Hälften ohne Stein.","Hilft bei Verstopfung."]},
+"Kiwi":{c:"#9CC45A",x:["Geschält in dicken Spalten.","Zerdrückt im Joghurt.","Kleine Stücke als Snack."]},
+"Orange / Mandarine":{c:"#F4A04A",k:"orange|mandarine",x:["Ein paar Löffel Saft in den Gemüsebrei – hilft bei der Eisenaufnahme.","Filets ohne Haut zum Lutschen.","Kleine Filetstücke als Snack."]},
+"Kirschen":{c:"#9E2235",k:"kirsche",x:["Entsteint und geviertelt.","Gedünstet und püriert im Grießbrei."]},
+"Ananas":{c:"#F6D55C",x:["Sehr reif püriert.","Lange, dünne Stücke zum Lutschen.","Kleine Stücke im Joghurt."]},
+"Datteln & Trockenobst":{c:"#9A6438",k:"dattel",x:["Eingeweicht und püriert als natürliche Süße im Teig.","Fein gehackt im Porridge."]},
+"Haferflocken":{c:"#E9D3A0",k:"hafer",x:["Zart im Brei oder Porridge.","In Pancakes, Talern, Keksen und Bällchen als Bindemittel.","Fein gemahlen zum Wälzen von rutschigem Obst."]},
+"Hirse":{c:"#F1D77A",x:["Hirseflocken im Getreide-Obst-Brei.","Gekochte Hirse in Talern.","Als glutenfreie Beilage statt Reis."]},
+"Grieß (Weizen)":{c:"#F3E6C4",k:"grieß",x:["Im Milch-Getreide-Brei.","Als Grießbrei mit Pflaumenmus.","Fest werden lassen und in Schnitten schneiden."]},
+"Reis":{c:"#F4EEDB",k:"(^|\\s)(milch|risotto)?reis",x:["Gut gekocht und püriert im Brei.","Reisbällchen zum Selbstessen.","Als Risotto, Milchreis oder in der Reispfanne – aber nicht täglich."]},
+"Nudeln":{c:"#F6E2A0",k:"nudel|fusilli|spaghetti",x:["Große Nudeln wie Fusilli sehr weich gekocht zum Greifen.","Kleine Nudeln mit Gemüsesoße.","Mit Lachs, Linsen-Tomaten oder Bolognese."]},
+"Brot":{c:"#E3B778",k:"(^|\\s)brot|toast|vollkornbrot",x:["Fein gemahlenes Brot in Streifen mit dünnem Aufstrich.","Getoastet als Avocado-Toast.","Zu Rührei oder Suppe."]},
+"Quinoa":{c:"#E9D3A0",x:["Gut gewaschen und weich gekocht im Brei.","In Talern oder Bällchen.","Als Beilage statt Reis."]},
+"Polenta (Maisgrieß)":{c:"#F6D55C",k:"polenta",x:["Als weicher Brei.","Fest werden lassen und in Sticks schneiden.","Mit Käse überbacken."]},
+"Couscous":{c:"#F1DFA8",x:["Weich gequollen mit Gemüse.","Zu Bällchen geformt.","Als schnelle Beilage."]},
+"Rote Linsen":{c:"#E8935A",k:"linsen",x:["Als Dal mit Karotte und Kokosmilch.","In Linsen-Bällchen.","In Tomatensoße als Bolognese-Ersatz."]},
+"Kichererbsen":{c:"#E3C98A",x:["Püriert als Hummus ohne Salz.","Zerdrückt in Bällchen.","Halbiert im Curry, wenn das Kind gut kaut."]},
+"Weiße Bohnen / Kidneybohnen":{c:"#F1E8D6",k:"weiße bohnen|kidney",x:["Fein püriert als Dip.","Zerdrückt im Eintopf.","Immer gut durchgegart."]},
+"Tofu":{c:"#F4EEDB",x:["Weicher Tofu zerdrückt im Brei.","Feste Sticks kurz angebraten.","Gewürfelt in Gemüsepfanne."]},
+"Erdnuss":{c:"#C98B54",k:"erdnuss",x:["Erdnussmus mit warmem Wasser verdünnt in den Brei rühren.","Ganz dünn auf Toaststreifen.","In Porridge oder Pancake-Teig."]},
+"Mandel":{c:"#D9B98A",k:"mandel",x:["Mandelmus mit Joghurt glatt rühren.","Gemahlen im Porridge.","Als Mus in Keksen."]},
+"Haselnuss":{c:"#B5794A",k:"haselnuss",x:["Fein gemahlen im Brei.","Mus dünn auf Brot."]},
+"Cashew":{c:"#E9D3A0",k:"cashew",x:["Mus in Soßen für Cremigkeit.","Gemahlen im Porridge."]},
+"Walnuss":{c:"#A8794A",k:"walnuss",x:["Fein gemahlen im Brei.","Gemahlen in Muffins."]},
+"Sesam (Tahin)":{c:"#D9B98A",k:"sesam|tahin|hummus",x:["Tahin im Hummus.","Dünn auf Brot.","Gemahlener Sesam über Gemüse."]},
+"Lein- & Chiasamen":{c:"#9A7A5A",k:"leinsamen|chia",x:["Eine Messerspitze gemahlen im Brei.","Eingeweicht im Porridge (ab 1 Jahr)."]},
+"Rindfleisch":{c:"#B5704F",k:"rind",x:["Mager und fein püriert im Mittagsbrei – wichtige Eisenquelle.","Große Streifen zum Lutschen.","Als Mini-Frikadellen oder Bolognese."]},
+"Hähnchen / Pute":{c:"#E9B477",k:"hähnchen|pute",x:["Durchgegart im Brei püriert.","Schenkelfleisch in Streifen – bleibt saftiger.","In Reispfanne oder Nudeln."]},
+"Schwein (mager)":{c:"#E5A08A",k:"schwein",x:["Mager, durchgegart im Brei.","Fein geschnitten im Familienessen."]},
+"Lachs":{c:"#F49A7A",k:"(^|\\s)lachs",x:["1–2× pro Woche im Brei statt Fleisch.","Zerpflückt zu Nudeln mit Brokkoli.","In Fischbällchen."]},
+"Weißfisch (Kabeljau, Seelachs)":{c:"#EDE6DA",k:"seelachs|kabeljau",x:["Gedämpft und zerpflückt im Brei.","Als Fisch-Kartoffel-Bällchen.","Als selbst gemachte Fischstäbchen."]},
+"Ei":{c:"#F6D55C",k:"(^|\\s)ei(er)?(\\s|$|,)",x:["Hart gekocht in Vierteln oder zerdrückt.","Als Omelett-Streifen mit Gemüse.","Als Bindemittel in Pancakes, Talern und Muffins.","Rührei – immer ganz durchgegart."]},
+"Naturjoghurt":{c:"#F7F3EA",k:"joghurt",x:["Mit Obstmus oder zerdrückten Beeren.","Als Dip zu Gemüsesticks.","In Overnight Oats oder Bananen-Eis."]},
+"Kuhmilch":{c:"#FFFFFF",k:"(^|\\s)(voll)?milch(\\s|$|,)",x:["Im Milch-Getreide-Brei.","In Pfannkuchen, Waffeln und Suppen.","Ab 1 Jahr als Getränk aus dem Becher."]},
+"Käse (mild)":{c:"#F6D55C",k:"käse",x:["Gerieben über Gemüse oder Polenta.","Dünne Streifen Mozzarella.","In Ei-Muffins oder Risotto."]},
+"Quark":{c:"#F7F3EA",x:["Mit Joghurt und Beeren.","In Pfannkuchen-Teig."]},
+"Butter":{c:"#FCE9A0",x:["Ein Klecks im Kartoffelstampf.","Dünn auf Brot."]},
+};
+function prepOf(f){return PREP[f.n]||{}}
+function foodColor(f){return prepOf(f).c||["#F4A04A","#E2533A","#E9D3A0","#E3C98A","#C98B54","#D86A6A","#F6D55C","#CCCCCC"][f.k]}
+function foodRegex(f){
+ const p=prepOf(f);
+ if(p.k)return new RegExp(p.k,"i");
+ const w=f.n.split(/[\s/(]/)[0].toLowerCase();
+ const stem=w.length>=6?w.slice(0,5):w;
+ return new RegExp("(^|[^a-zäöüß])"+stem,"i");
+}
+function recipesWith(f){const re=foodRegex(f);return allRecipes().filter(r=>(r.i||[]).some(x=>re.test(" "+x[1])))}
 
 /* ---------- Theme ---------- */
 function isDark(){return state.theme?state.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
@@ -540,28 +1006,36 @@ function showFood(name){
   const a=ageMonths(),cur=stageIdx(a),start=stageIdx(f.m);
   const labels=["Einstieg bis 8 Mon.","9–12 Monate","ab 12 Monaten"];
   const al=f.a?ALLERGENS.find(x=>x.k===f.a):null;
-  const c=triedCount(f.n);
+  const c=triedCount(f.n),col=foodColor(f),pr=prepOf(f);
   let strip="",stages="";
   if(f.m!=null&&f.m<24){
     strip=`<div class="strip">${labels.map((l,i)=>`<div class="${i>=start&&f.p[i]?"ok":"off"} ${i===cur?"now":""}">${l}</div>`).join("")}</div>
       ${a!=null?`<p class="small muted">Umrandet: das aktuelle Alter deines Babys (${a} Mon.)</p>`:""}`;
-    stages=labels.map((l,i)=>f.p[i]?`<div class="stage"><b>${l}</b>${esc(f.p[i])}</div>`:"").join("");
+    stages=labels.map((l,i)=>{
+      if(!f.p[i])return "";
+      const fm=formsFor(f.p[i]);
+      return `<div class="stage${i===cur?" cur":""}"><b>${l}</b>${fm.length?`<div class="forms">${fm.map(x=>formCard(x,col)).join("")}</div>`:""}${esc(f.p[i])}</div>`;
+    }).join("");
   }
+  const recs=f.k!==7?recipesWith(f):[];
   openSheet(`<div class="hd"><div class="em">${f.e}</div><h2>${esc(f.n)}</h2>${moBadge(f)}</div>
     <p class="muted small" style="margin-top:6px">${esc(CATS[f.k])}${al?` · Allergen: <b style="color:var(--beet)">${esc(al.n)}</b>`:""}${c?` · ✓ ${c}× probiert`:""}</p>
     ${strip}${stages}
-    ${f.z?`<div class="infobox"><b>Zubereitung</b><br>${esc(f.z)}</div>`:""}
+    ${pr.x&&pr.x.length?`<h3 class="sec" style="font-size:17px">Zubereitungsideen</h3><ul class="ideas">${pr.x.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
+    ${f.z?`<div class="infobox"><b>So bereitest du es vor</b><br>${esc(f.z)}</div>`:""}
     ${f.w?`<div class="warnbox">⚠️ ${esc(f.w)}</div>`:""}
+    ${recs.length?`<h3 class="sec" style="font-size:17px">In diesen Rezepten</h3><div class="rchips">${recs.map(r=>`<button class="rchip" data-rid="${esc(r.id)}">${dishThumb(r)}<span>${esc(r.n)}</span><small>ab ${r.m||"?"} Mon.</small></button>`).join("")}</div>`:""}
     <div class="row" style="margin-top:16px">
       ${f.m!=null&&f.k!==7?`<button class="btn full" id="toDiary">Ins Tagebuch</button>`:""}
       <button class="btn ghost full" id="closeS">Schließen</button>
     </div>`);
   $("#closeS").onclick=closeSheet;
   const t=$("#toDiary");if(t)t.onclick=()=>addEntry(f.n);
+  $("#sheet").querySelectorAll("[data-rid]").forEach(b=>b.onclick=()=>showRecipe(b.dataset.rid));
 }
 
 /* ---------- Rezepte ---------- */
-let rTyp="Alle";
+let rTyp="Alle",rAge=-1,rAgeInit=false;
 const TYPS=["Brei","Fingerfood","Frühstück","Familie","Snack"];
 const TYPEM={Brei:"🥣",Fingerfood:"🥕",Frühstück:"🌅",Familie:"🍽️",Snack:"🍪"};
 function allRecipes(){return [...RECIPES.map((r,i)=>({...r,id:"b"+i})),...(state.recipes||[]).map(r=>({...r,own:true}))]}
@@ -569,18 +1043,24 @@ function recById(id){return allRecipes().find(r=>r.id===id)}
 function recCard(r,a){
   const later=a!=null&&r.m&&r.m>a;
   return `<button class="rec" data-r="${esc(r.id)}">
-    <div class="row">${r.photo?`<img class="thumb" data-ph="${esc(r.id)}" alt="">`:`<span style="font-size:30px">${esc(r.e||"🥣")}</span>`}
+    <div class="row">${r.photo?`<img class="thumb" data-ph="${esc(r.id)}" alt="">`:dishThumb(r)}
     <div style="flex:1;min-width:0"><h3>${esc(r.n)}${r.own?'<span class="tag own">Eigenes</span>':""}</h3>${r.d?`<p class="small muted">${esc(r.d)}</p>`:""}</div></div>
     <div class="meta">${r.m?`<span style="${later?"background:var(--sun-soft);color:var(--sun)":"background:var(--pea-soft);color:var(--pea)"}">ab ${r.m} Mon.</span>`:""}${r.t?`<span>${r.t} Min.</span>`:""}${r.typ?`<span>${esc(r.typ)}</span>`:""}</div></button>`;
 }
 function renderRecipes(){
   const el=$("#v-rezepte"),a=ageMonths();
+  if(!rAgeInit&&a!=null){rAgeInit=true;rAge=AGES.findIndex((g,i)=>i>0&&a>=g[1]&&a<=g[2]);}
   const typs=["Alle","Eigene",...TYPS];
-  const L=allRecipes().filter(r=>rTyp==="Alle"||(rTyp==="Eigene"?r.own:r.typ===rTyp)).sort((x,y)=>(x.m||0)-(y.m||0)||x.n.localeCompare(y.n,"de"));
+  const ag=AGES[rAge<0?0:rAge];
+  const L=allRecipes().filter(r=>(rTyp==="Alle"||(rTyp==="Eigene"?r.own:r.typ===rTyp))&&(rAge<=0||((r.m||0)>=ag[1]&&(r.m||0)<=ag[2])))
+    .sort((x,y)=>(x.m||0)-(y.m||0)||x.n.localeCompare(y.n,"de"));
   el.innerHTML=`<div class="row"><button class="btn full" id="rNew">+ Eigenes Rezept</button><button class="btn ghost full" id="rPaste">📷 Aus Foto</button></div>
-   <div class="chips" id="rc" style="margin-top:12px">${typs.map(t=>`<button class="chip ${rTyp===t?"on":""}" data-t="${t}">${t}</button>`).join("")}</div>
-   <div style="margin-top:8px">${L.length?L.map(r=>recCard(r,a)).join(""):`<div class="empty"><div class="e">📖</div>${rTyp==="Eigene"?"Noch keine eigenen Rezepte. Leg oben eins an oder übernimm eins aus einem Foto.":"Keine Rezepte in dieser Kategorie."}</div>`}</div>`;
+   <div class="chips" id="ra" style="margin-top:12px">${AGES.map((g,i)=>`<button class="chip ${(rAge<=0?0:rAge)===i?"on":""}" data-a="${i}">${g[0]}</button>`).join("")}</div>
+   <div class="chips" id="rc">${typs.map(t=>`<button class="chip ${rTyp===t?"on":""}" data-t="${t}">${t}</button>`).join("")}</div>
+   <p class="small muted" style="margin:2px 2px 0">${L.length} Rezept${L.length===1?"":"e"}${rAge>0?` für ${ag[0]}`:""}</p>
+   <div style="margin-top:8px">${L.length?L.map(r=>recCard(r,a)).join(""):`<div class="empty"><div class="e">📖</div>${rTyp==="Eigene"?"Noch keine eigenen Rezepte. Leg oben eins an oder übernimm eins aus einem Foto.":"Keine Rezepte für diese Auswahl."}</div>`}</div>`;
   $("#rc").onclick=e=>{const b=e.target.closest("[data-t]");if(b){rTyp=b.dataset.t;renderRecipes()}};
+  $("#ra").onclick=e=>{const b=e.target.closest("[data-a]");if(b){rAge=+b.dataset.a;renderRecipes()}};
   $("#rNew").onclick=()=>editRecipe(null);
   $("#rPaste").onclick=pasteRecipe;
   el.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>showRecipe(b.dataset.r));
@@ -588,13 +1068,14 @@ function renderRecipes(){
 }
 function showRecipe(id){
   const r=recById(id);if(!r)return;
-  openSheet(`${r.photo?'<img class="hero-img" id="rImg" alt="">':""}
+  const canDraw=r.i&&r.i.length;
+  openSheet(`${r.photo?'<img class="hero-img" id="rImg" alt="">':canDraw?`<div class="sketchwrap">${recipeSketch(r)}</div>`:""}
    <div class="hd"><div class="em">${esc(r.e||"🥣")}</div><h2>${esc(r.n)}</h2></div>
    <div class="meta">${r.m?`<span>ab ${r.m} Monaten</span>`:""}${r.t?`<span>${r.t} Min.</span>`:""}${r.typ?`<span>${esc(r.typ)}</span>`:""}${r.own?"<span>Eigenes Rezept</span>":""}</div>
    ${r.d?`<p style="margin-top:10px">${esc(r.d)}</p>`:""}
-   ${r.i&&r.i.length?`<h3 class="sec" style="font-size:17px">Zutaten</h3><ul class="ing">${r.i.map(x=>`<li>${x[0]?`<b>${esc(x[0])}</b>`:""}${esc(x[1])}</li>`).join("")}</ul>`:""}
+   ${r.i&&r.i.length?`<h3 class="sec" style="font-size:17px">Zutaten</h3><ul class="ing">${r.i.map((x,k)=>`<li><span class="no">${k+1}</span>${x[0]?`<b>${esc(x[0])}</b>`:""}${esc(x[1])}</li>`).join("")}</ul>`:""}
    ${r.s&&r.s.length?`<h3 class="sec" style="font-size:17px">So geht's</h3><ol class="steps">${r.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}
-   ${r.own?"":`<div class="infobox">Brei hält sich abgedeckt 1 Tag im Kühlschrank oder portioniert ca. 3 Monate eingefroren. Nur einmal aufwärmen.</div>`}
+   ${r.own?"":`<div class="infobox">${r.m&&r.m>=10?"Reste abgedeckt 1–2 Tage im Kühlschrank oder portioniert einfrieren.":"Brei hält sich abgedeckt 1 Tag im Kühlschrank oder portioniert ca. 3 Monate eingefroren."} Nur einmal aufwärmen.</div>`}
    ${r.own?`<div class="row" style="margin-top:16px"><button class="btn ghost full" id="rEdit">✏️ Bearbeiten</button><button class="btn warn full" id="rDel">Löschen</button></div>`:""}
    <button class="btn ghost full" style="margin-top:10px" id="closeS">Schließen</button>`);
   $("#closeS").onclick=closeSheet;
@@ -970,7 +1451,7 @@ function renderMore(){
    </div>
    <button class="btn warn full" style="margin-top:18px" id="wipe">Tagebuch komplett löschen</button>
    <p class="disc">Die Angaben sind Richtwerte nach gängigen Empfehlungen. Jedes Kind hat sein eigenes Tempo – im Zweifel Kinderarzt oder Hebamme fragen.</p>
-   <p class="disc" style="margin-top:8px;font-weight:800">Version 2.0 · Offline · Stand 11.10.2026</p>`;
+   <p class="disc" style="margin-top:8px;font-weight:800">Version 2.1 · Offline · Stand 11.10.2026</p>`;
   el.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const m=b.dataset.m;if(m==="al")showAllergens();if(m==="sos")showSOS();if(m==="plan")showPlan();if(m==="sync")showSync()});
   $("#bSave").onclick=()=>{state.birth=$("#bIn").value;save();renderAll();toast("Gespeichert")};
   $("#thC").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;state.theme=b.dataset.t;applyTheme();save();renderMore()};
@@ -991,7 +1472,7 @@ function showPlan(){
 }
 
 /* ---------- Start ---------- */
-function renderAll(){renderHome();renderFoods();renderRecipes();renderDiary();renderMore()}
+function renderAll(){skDefs();renderHome();renderFoods();renderRecipes();renderDiary();renderMore()}
 renderAll();
 
 /* Offline-Betrieb & dauerhafter Speicher */
