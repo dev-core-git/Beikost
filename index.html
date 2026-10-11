@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Beikost</title>
+<meta name="apple-mobile-web-app-title" content="Beikost">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#3F7F2E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<style>
+:root{
+  --bg:#F2F6F0; --surface:#FFFFFF; --surface2:#E9F0E5; --ink:#1E2B22; --muted:#5E6D62; --line:#D9E3D5;
+  --pea:#3F7F2E; --pea-soft:#DCEBD2; --beet:#A42D57; --beet-soft:#F6DFE7; --sun:#B9731A; --sun-soft:#FBEBD3;
+  --shadow:0 1px 0 rgba(30,43,34,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111712; --surface:#1A221C; --surface2:#222C24; --ink:#E6EEE6; --muted:#98A89C; --line:#2B372E;
+    --pea:#8FC874; --pea-soft:#24361F; --beet:#EA85A6; --beet-soft:#3B1F2A; --sun:#F1BC62; --sun-soft:#3A2C16;
+    --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111712; --surface:#1A221C; --surface2:#222C24; --ink:#E6EEE6; --muted:#98A89C; --line:#2B372E;
+  --pea:#8FC874; --pea-soft:#24361F; --beet:#EA85A6; --beet-soft:#3B1F2A; --sun:#F1BC62; --sun-soft:#3A2C16;
+  --shadow:none; color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45;padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--pea);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.15}
+p{margin:0}
+
+/* Kopf */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;gap:10px;padding:14px 18px 10px}
+.top h1{font-size:28px;font-weight:900;letter-spacing:-.02em;flex:1}
+.agechip{background:var(--pea-soft);color:var(--pea);font-weight:800;font-size:14px;border-radius:999px;padding:6px 12px;border:0}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;font-size:19px}
+
+main{padding:4px 18px 24px;max-width:720px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+
+/* Tab-Leiste */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;font-size:11px;font-weight:700;color:var(--muted);border-radius:12px}
+.tabs button span{font-size:21px;line-height:1.1;filter:grayscale(1);opacity:.7}
+.tabs button.on{color:var(--pea)}
+.tabs button.on span{filter:none;opacity:1}
+
+/* Bausteine */
+.sec{margin:22px 0 10px;font-size:19px;font-weight:900}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.stack>*+*{margin-top:10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:800;background:var(--pea);color:var(--surface)}
+.btn.ghost{background:var(--surface2);color:var(--ink)}
+.btn.warn{background:var(--beet-soft);color:var(--beet)}
+.btn.full{width:100%}
+.row{display:flex;gap:10px;align-items:center}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:700;color:var(--muted)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input[type=text],input[type=date],input[type=search],input[type=number],select,textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 13px;font-size:16px}
+textarea{min-height:70px;resize:vertical}
+label.f{display:block;font-weight:800;font-size:14px;margin:14px 0 6px}
+.switch{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:var(--muted)}
+.switch input{width:20px;height:20px;accent-color:var(--pea)}
+
+/* Heute */
+.hero{background:var(--pea);color:var(--surface);border-radius:22px;padding:20px 20px 18px;position:relative;overflow:hidden}
+.hero .big{font-size:64px;font-weight:900;line-height:.9;letter-spacing:-.04em}
+.hero .unit{font-size:18px;font-weight:800;opacity:.9}
+.hero p{margin-top:10px;font-weight:600;opacity:.95;max-width:34ch}
+.hero .spoon{position:absolute;right:-14px;bottom:-18px;font-size:110px;opacity:.18;transform:rotate(-18deg)}
+.setup{background:var(--surface);border:2px dashed var(--line);border-radius:20px;padding:18px}
+
+/* Lebensmittel-Liste */
+.food{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;width:100%;text-align:left}
+.food+.food{margin-top:8px}
+.food .em{font-size:28px;width:36px;text-align:center}
+.food .nm{font-weight:800}
+.food .sub{font-size:13px;color:var(--muted)}
+.food .mid{flex:1;min-width:0}
+.mo{flex:none;min-width:52px;text-align:center;border-radius:12px;padding:6px 4px;font-weight:900;font-size:17px;line-height:1;background:var(--pea-soft);color:var(--pea)}
+.mo small{display:block;font-size:10px;font-weight:800;margin-top:2px;opacity:.85}
+.mo.later{background:var(--sun-soft);color:var(--sun)}
+.mo.no{background:var(--beet-soft);color:var(--beet)}
+.tag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px;background:var(--beet-soft);color:var(--beet)}
+.tick{font-size:12px;font-weight:800;color:var(--pea)}
+
+/* Stufenleiste */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:14px 0 4px}
+.strip div{border-radius:8px;padding:8px 6px;font-size:12px;font-weight:800;text-align:center;background:var(--surface2);color:var(--muted)}
+.strip div.ok{background:var(--pea-soft);color:var(--pea)}
+.strip div.now{outline:2.5px solid var(--pea);outline-offset:-2.5px}
+.strip div.off{background:repeating-linear-gradient(135deg,var(--surface2) 0 6px,transparent 6px 12px);opacity:.8}
+.stage{border-left:4px solid var(--pea);padding:4px 0 4px 12px;margin-top:12px}
+.stage.off{border-color:var(--line)}
+.stage b{display:block;font-size:14px}
+.warnbox{background:var(--beet-soft);color:var(--beet);border-radius:12px;padding:12px;font-weight:700;font-size:14px;margin-top:14px}
+.infobox{background:var(--surface2);border-radius:12px;padding:12px;font-size:14px;margin-top:14px}
+
+/* Rezepte */
+.rec{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.rec+.rec{margin-top:10px}
+.rec h3{font-size:17px;font-weight:900}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.meta span{font-size:12px;font-weight:800;background:var(--surface2);border-radius:999px;padding:3px 9px;color:var(--muted)}
+ol.steps{padding-left:22px;margin:8px 0 0}
+ol.steps li{margin:6px 0}
+ul.ing{list-style:none;padding:0;margin:8px 0 0}
+ul.ing li{padding:7px 0;border-bottom:1px solid var(--line);display:flex;gap:10px}
+ul.ing li b{min-width:74px}
+
+.thumb{width:56px;height:56px;border-radius:12px;object-fit:cover;background:var(--surface2);flex:none}
+.hero-img{width:100%;max-height:260px;object-fit:cover;border-radius:16px;margin:4px 0 12px;display:block;background:var(--surface2)}
+.tag.own{background:var(--pea-soft);color:var(--pea)}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+label.btn{display:block;cursor:pointer}
+
+/* Tagebuch */
+.day{font-weight:900;font-size:15px;margin:18px 0 8px;color:var(--muted)}
+.entry{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.entry+.entry{margin-top:8px}
+.entry .re{font-size:26px}
+.entry .x{margin-left:auto;border:0;background:none;color:var(--muted);font-size:18px;padding:2px 6px}
+.symp{color:var(--beet);font-weight:800;font-size:13px}
+.react{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.react button{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 4px;font-weight:800;font-size:13px}
+.react button span{display:block;font-size:26px}
+.react button.on{border-color:var(--pea);background:var(--pea-soft);color:var(--pea)}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:14px;font-weight:700;background:var(--surface)}
+.checks input{accent-color:var(--beet)}
+.empty{text-align:center;padding:28px 10px;color:var(--muted)}
+.empty .e{font-size:44px}
+
+/* Allergene */
+.al{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.al+.al{margin-top:8px}
+.al .em{font-size:26px}
+.al .st{margin-left:auto;font-size:12px;font-weight:900;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.st.new{background:var(--surface2);color:var(--muted)}
+.st.due{background:var(--sun-soft);color:var(--sun)}
+.st.ok{background:var(--pea-soft);color:var(--pea)}
+.st.bad{background:var(--beet-soft);color:var(--beet)}
+
+/* Notfall */
+.sos{background:var(--beet);color:#fff;border-radius:20px;padding:18px}
+.sos h2{font-size:24px;font-weight:900}
+.sos a{color:#fff}
+.call{display:block;text-align:center;background:#fff;color:var(--beet) !important;font-weight:900;font-size:22px;border-radius:14px;padding:12px;margin-top:12px;text-decoration:none}
+ol.big{padding-left:0;list-style:none;counter-reset:s;margin:12px 0 0}
+ol.big li{counter-increment:s;display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ol.big li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--beet);color:#fff;font-weight:900;display:grid;place-items:center}
+
+/* Mehr-Menü */
+.menu{display:flex;align-items:center;gap:14px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;font-weight:800}
+.menu+.menu{margin-top:8px}
+.menu span{font-size:24px}
+.menu small{display:block;font-weight:600;color:var(--muted)}
+
+/* Blatt (Modal) */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:51;background:var(--bg);border-radius:24px 24px 0 0;max-height:92%;overflow-y:auto;padding:10px 18px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .28s ease;max-width:720px;margin:0 auto}
+.sheet.on{transform:none}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
+.sheet .hd{display:flex;align-items:center;gap:12px}
+.sheet .hd .em{font-size:44px}
+.sheet .hd h2{font-size:26px;font-weight:900;flex:1}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 18px;font-weight:800;font-size:14px;z-index:60;display:none}
+.disc{font-size:12px;color:var(--muted);text-align:center;margin:26px 8px 0}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Beikost</h1>
+  <button class="agechip" id="ageChip" hidden></button>
+  <button class="iconbtn" id="themeBtn" aria-label="Hell oder dunkel umschalten">🌙</button>
+</header>
+
+<main>
+  <section class="view on" id="v-heute"></section>
+  <section class="view" id="v-essen"></section>
+  <section class="view" id="v-rezepte"></section>
+  <section class="view" id="v-buch"></section>
+  <section class="view" id="v-mehr"></section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-v="heute" class="on"><span>🏠</span>Heute</button>
+  <button data-v="essen"><span>🥕</span>Lebensmittel</button>
+  <button data-v="rezepte"><span>🥣</span>Rezepte</button>
+  <button data-v="buch"><span>📒</span>Tagebuch</button>
+  <button data-v="mehr"><span>☰</span>Mehr</button>
+</nav>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Daten: Lebensmittel ----------
+ m = ab ca. Monaten (Alter), null = meiden
+ p = [Einstieg bis 8 Mon, 9–12 Mon, ab 12 Mon]
+ a = Allergen-Schlüssel */
+const CATS=["Gemüse","Obst","Getreide","Hülsenfrüchte & Soja","Nüsse & Samen","Fleisch & Fisch","Ei & Milch","Erst später / meiden"];
+const FOODS=[
+// Gemüse
+{e:"🥕",n:"Karotte",k:0,m:5,p:["Gedämpft und fein püriert. Als Fingerfood: weich gegarte Sticks, finger­lang und -dick.","Weich gegarte Würfel oder Scheiben, roh nur sehr fein gerieben.","Gegart in Stücken; roh weiterhin fein geraspelt."],z:"Schälen, in Stücke schneiden, 10–15 Min. dämpfen bis sie sich mit der Gabel leicht zerdrücken lässt.",w:"Rohe Karottenstücke sind hart – Erstickungsgefahr. Roh nur gerieben geben."},
+{e:"🥔",n:"Kartoffel",k:0,m:5,p:["Gekocht und püriert oder zerdrückt im Brei; Ofen-Sticks weich gebacken.","Kleine weiche Würfel, Kartoffelstampf.","Wie Familienkost, ohne Salz für das Baby."],z:"Mehligkochende Sorten werden besonders weich. Grüne Stellen und Keime großzügig entfernen.",w:""},
+{e:"🍠",n:"Süßkartoffel",k:0,m:5,p:["Püriert oder als weiche Ofen-Spalten.","Weiche Würfel, Stampf.","Wie Familienkost."],z:"Mit Schale im Ofen bei 200 °C ca. 25 Min. backen oder schälen und dämpfen.",w:""},
+{e:"🎃",n:"Kürbis (Hokkaido)",k:0,m:5,p:["Gedämpft püriert oder weiche Ofenspalten.","Weiche Würfel.","Wie Familienkost."],z:"Hokkaido kann mit Schale gegart werden, für den Brei aber die Schale entfernen oder sehr fein pürieren.",w:""},
+{e:"🥕",n:"Pastinake",k:0,m:5,p:["Gedämpft und püriert – milder Klassiker für den ersten Brei. Weiche Sticks.","Weiche Würfel.","Gegart in Stücken."],z:"Schälen, in Scheiben schneiden, ca. 12 Min. dämpfen.",w:"Roh hart – nur gegart geben."},
+{e:"🥒",n:"Zucchini",k:0,m:5,p:["Gedämpft püriert oder weiche Sticks mit Schale (Schale hilft beim Greifen).","Weiche Würfel oder Scheiben.","Gegart oder roh geraspelt."],z:"Waschen, in Sticks schneiden, 5–8 Min. dämpfen.",w:""},
+{e:"🥦",n:"Brokkoli",k:0,m:5,p:["Püriert oder große Röschen mit Stiel als Griff, weich gedämpft.","Kleine weiche Röschen.","Wie Familienkost."],z:"Röschen 6–8 Min. dämpfen, bis sie weich, aber nicht zerfallen sind.",w:"Kann blähen – anfangs kleine Mengen."},
+{e:"🥬",n:"Blumenkohl",k:0,m:5,p:["Püriert oder große weiche Röschen.","Kleine weiche Röschen.","Wie Familienkost."],z:"8–10 Min. dämpfen.",w:"Kann blähen – anfangs kleine Mengen."},
+{e:"🌿",n:"Fenchel",k:0,m:5,p:["Gedämpft und fein püriert.","Weich gegarte kleine Stücke.","Gegart oder fein geschnitten."],z:"Harten Strunk entfernen, in Streifen dämpfen.",w:""},
+{e:"🫛",n:"Erbsen",k:0,m:6,p:["Gekocht und fein püriert.","Zerdrückt (flach gedrückt) zum Selbstgreifen.","Ganz, gut gegart."],z:"TK-Erbsen 5 Min. kochen.",w:"Ganze runde Erbsen erst mit sicherem Kauen – vorher zerdrücken."},
+{e:"🥬",n:"Spinat",k:0,m:6,p:["Frisch gekocht, fein püriert, in Brei oder Omelett.","Gehackt in Pfannkuchen, Omelett, Nudeln.","Wie Familienkost."],z:"Blanchieren und fein hacken oder pürieren.",w:"Wegen Nitrat nicht warmhalten und kein zweites Mal aufwärmen. Reste schnell kühlen."},
+{e:"🟣",n:"Rote Bete",k:0,m:6,p:["Gegart, püriert oder weiche Sticks.","Kleine weiche Würfel.","Gegart oder roh fein gerieben."],z:"Vorgegarte Rote Bete ohne Essig verwenden oder selbst 40 Min. kochen.",w:"Färbt Stuhl und Urin rötlich – harmlos. Enthält viel Nitrat, daher nicht täglich."},
+{e:"🥒",n:"Gurke",k:0,m:6,p:["Große, dicke Sticks zum Lutschen (gekühlt gut beim Zahnen).","Dünne Scheiben oder kleine Würfel.","Wie Familienkost."],z:"Waschen, teils schälen, längs in dicke Sticks schneiden.",w:"Nur große Sticks oder sehr kleine Stücke – keine mundgerechten harten Scheiben am Anfang."},
+{e:"🍅",n:"Tomate",k:0,m:6,p:["Gehäutet und püriert, als Soße.","Kirschtomaten immer längs vierteln.","Kirschtomaten weiter vierteln."],z:"Kreuzweise einritzen, kurz überbrühen, Haut abziehen.",w:"Kirschtomaten nie ganz geben (bis ca. 4 Jahre vierteln). Säure kann Rötungen um den Mund machen."},
+{e:"🫑",n:"Paprika",k:0,m:6,p:["Gegart und püriert oder weich gebackene Streifen.","Weiche Streifen, Haut ggf. abziehen.","Roh in dünnen Streifen."],z:"Im Ofen rösten, dann lässt sich die Haut leicht abziehen.",w:"Rohe Paprikahaut ist zäh – anfangs nur gegart."},
+{e:"🫘",n:"Grüne Bohnen",k:0,m:6,p:["Gut gegart, püriert oder ganze weiche Bohnen.","Weiche Stücke.","Wie Familienkost."],z:"Enden abschneiden, 10–12 Min. kochen.",w:"Nie roh – rohe Bohnen sind giftig."},
+{e:"🍆",n:"Aubergine",k:0,m:6,p:["Gebacken, Fruchtfleisch zerdrückt.","Weiche Würfel.","Wie Familienkost."],z:"Halbieren, im Ofen weich backen, Fruchtfleisch auslöffeln.",w:""},
+{e:"🥑",n:"Avocado",k:0,m:5,p:["Zerdrückt oder reife Spalten (in gemahlenen Haferflocken wälzen, dann rutschen sie nicht).","Würfel.","Wie Familienkost."],z:"Nur sehr reife, weiche Avocado verwenden.",w:""},
+{e:"🍄",n:"Champignons",k:0,m:8,p:["Gut gegart und fein gehackt im Brei.","Gegarte, fein geschnittene Stücke.","Wie Familienkost."],z:"Immer durchgaren.",w:"Nicht roh geben. Wildpilze im Kleinkindalter meiden."},
+{e:"🌽",n:"Mais",k:0,m:8,p:["Körner gekocht und püriert.","Körner zerdrückt; gegarter Kolben zum Abnagen.","Ganze gegarte Körner."],z:"Gekocht oder aus der Dose ohne Salz, abgespült.",w:"Ganze Körner anfangs zerdrücken."},
+{e:"🥗",n:"Blattsalat",k:0,m:12,p:["","","Sehr fein geschnitten, zarte Sorten."],z:"Zarte Sorten wie Kopfsalat, fein schneiden.",w:"Große Blätter kleben leicht am Gaumen – vorher fein schneiden."},
+// Obst
+{e:"🍎",n:"Apfel",k:1,m:5,p:["Gedünstet als Mus oder weiche gedünstete Spalten; roh nur fein gerieben.","Gedünstete Spalten, roh fein gerieben.","Roh in sehr dünnen Scheiben."],z:"Schälen, Spalten 5–8 Min. dünsten.",w:"Rohe Apfelstücke sind hart – Erstickungsgefahr. Roh nur gerieben oder hauchdünn."},
+{e:"🍐",n:"Birne",k:1,m:5,p:["Gedünstet püriert; sehr reif auch roh in großen Spalten.","Reife weiche Stücke.","Wie Familienkost."],z:"Harte Birnen dünsten, reife weich roh geben.",w:""},
+{e:"🍌",n:"Banane",k:1,m:5,p:["Zerdrückt oder halbe Banane – untere Schale als Griff dranlassen. Längs dritteln ergibt drei Sticks.","Scheiben oder Stücke.","Wie Familienkost."],z:"Reife Banane, zerdrückt auch als Süße in Pancakes.",w:"Kann stopfen – bei Verstopfung weniger."},
+{e:"🫐",n:"Heidelbeeren",k:1,m:6,p:["Zerdrückt (flach gedrückt) oder im Brei.","Halbiert oder zerdrückt.","Halbiert, später ganz."],z:"Waschen und zwischen den Fingern flach drücken.",w:"Runde Beeren nicht ganz geben, solange das Kind nicht sicher kaut."},
+{e:"🍇",n:"Weintrauben",k:1,m:6,p:["Kernlos, längs geviertelt oder püriert.","Längs vierteln.","Längs vierteln."],z:"Kernlose Trauben längs vierteln.",w:"Bis ca. 4–5 Jahre nie ganz geben – hohes Erstickungsrisiko."},
+{e:"🍓",n:"Erdbeeren",k:1,m:6,p:["Große ganze Beere zum Lutschen oder zerdrückt.","Kleine Stücke.","Wie Familienkost."],z:"Waschen, Grün entfernen.",w:"Kann Rötungen um den Mund machen – meist harmlos."},
+{e:"🍒",n:"Himbeeren",k:1,m:6,p:["Leicht zerdrückt oder ganz (sehr weich).","Ganz.","Ganz."],z:"Waschen.",w:""},
+{e:"🥭",n:"Mango",k:1,m:5,p:["Püriert oder breite reife Streifen.","Kleine Würfel.","Wie Familienkost."],z:"Nur reife, weiche Mango.",w:""},
+{e:"🍈",n:"Melone",k:1,m:6,p:["Große Spalten ohne Kerne, Schale als Griff.","Kleine Würfel.","Wie Familienkost."],z:"Kerne entfernen.",w:""},
+{e:"🍑",n:"Pfirsich / Nektarine",k:1,m:6,p:["Reif halbiert und entsteint oder püriert.","Kleine weiche Stücke.","Wie Familienkost."],z:"Harte Früchte kurz dünsten.",w:"Stein immer entfernen."},
+{e:"🟣",n:"Pflaume",k:1,m:6,p:["Gedünstet püriert oder reif in Hälften.","Kleine Stücke.","Wie Familienkost."],z:"Entsteinen, ggf. dünsten.",w:"Stein entfernen. Wirkt abführend."},
+{e:"🥝",n:"Kiwi",k:1,m:6,p:["Geschält in dicken Spalten oder zerdrückt.","Kleine Stücke.","Wie Familienkost."],z:"Nur reife Kiwis.",w:"Säure kann den Po wund oder den Mund rot machen."},
+{e:"🍊",n:"Orange / Mandarine",k:1,m:6,p:["Filets ohne Haut oder etwas Saft im Brei (Vitamin C hilft bei der Eisenaufnahme).","Filets in kleinen Stücken.","Filets."],z:"Haut und Kerne entfernen.",w:"Säure kann Rötungen machen."},
+{e:"🍒",n:"Kirschen",k:1,m:8,p:["Entsteint und geviertelt oder püriert.","Entsteint, geviertelt.","Entsteint, halbiert."],z:"Entsteinen.",w:"Stein immer entfernen, nicht ganz geben."},
+{e:"🍍",n:"Ananas",k:1,m:8,p:["Sehr reif, püriert oder lange dünne Stücke zum Lutschen.","Kleine weiche Stücke.","Wie Familienkost."],z:"Harten Strunk entfernen.",w:"Faserig und säurehaltig."},
+{e:"🌰",n:"Datteln & Trockenobst",k:1,m:10,p:["","Eingeweicht und fein gehackt oder püriert zum Süßen.","Eingeweicht, klein geschnitten."],z:"30 Min. in warmem Wasser einweichen, fein hacken.",w:"Ganz und trocken zu zäh und klebrig – Erstickungsgefahr."},
+// Getreide
+{e:"🌾",n:"Haferflocken",k:2,m:5,a:"weizen",p:["Zarte Flocken im Brei; fein gemahlen auch in Pancakes.","Porridge, Pancakes, Taler.","Wie Familienkost."],z:"Zarte Flocken in Wasser oder Milch aufkochen.",w:"Enthält Gluten – anfangs in kleinen Mengen einführen."},
+{e:"🌾",n:"Hirse",k:2,m:5,p:["Hirseflocken im Brei.","Gekochte Hirse in Taler oder Bällchen.","Wie Familienkost."],z:"Hirse heiß waschen, 1:2,5 mit Wasser 10 Min. köcheln, quellen lassen.",w:"Glutenfrei."},
+{e:"🌾",n:"Grieß (Weizen)",k:2,m:6,a:"weizen",p:["Im Milch-Getreide-Brei.","Grießbrei, Grießtaler.","Wie Familienkost."],z:"In Milch einrühren und kurz köcheln.",w:"Enthält Gluten."},
+{e:"🍚",n:"Reis",k:2,m:6,p:["Gut gekocht, püriert oder zu Bällchen geformt.","Weicher Reis, Reisbällchen.","Wie Familienkost."],z:"Reis waschen, im Wasserüberschuss kochen und abgießen – das senkt Arsen.",w:"Reiswaffeln und Reisdrinks meiden (Arsen). Reis nicht täglich."},
+{e:"🍝",n:"Nudeln",k:2,m:6,a:"weizen",p:["Große Nudeln (z. B. Fusilli, Penne) sehr weich gekocht zum Greifen.","Kleine weiche Nudeln.","Wie Familienkost."],z:"Etwas länger als angegeben kochen, ohne Salz.",w:"Enthält Gluten (Weizen)."},
+{e:"🍞",n:"Brot",k:2,m:8,a:"weizen",p:["Weiches Vollkornbrot fein gemahlen, in Streifen, dünn mit Mus bestrichen.","Kleine Stücke, Toaststreifen.","Wie Familienkost."],z:"Fein gemahlenes Brot ohne ganze Körner wählen, salzarm.",w:"Ganze Körner und Saaten meiden. Brot enthält Salz – in Maßen."},
+{e:"🌾",n:"Quinoa",k:2,m:6,p:["Gut gewaschen und weich gekocht, im Brei.","In Taler oder Bällchen.","Wie Familienkost."],z:"Sehr gründlich waschen (Bitterstoffe), 15 Min. kochen.",w:""},
+{e:"🌽",n:"Polenta (Maisgrieß)",k:2,m:6,p:["Als weicher Brei.","Fest werden lassen, in Sticks schneiden.","Wie Familienkost."],z:"In Wasser oder Milch einrühren, quellen lassen.",w:""},
+{e:"🥣",n:"Couscous",k:2,m:8,a:"weizen",p:["Weich gequollen im Brei.","Mit Gemüse gemischt, zu Bällchen geformt.","Wie Familienkost."],z:"Mit kochendem Wasser übergießen, quellen lassen.",w:"Enthält Gluten."},
+// Hülsenfrüchte
+{e:"🫘",n:"Rote Linsen",k:3,m:6,p:["Weich gekocht und püriert – gute Eisenquelle im vegetarischen Brei.","Dal, Linsenbällchen.","Wie Familienkost."],z:"Waschen, 15 Min. kochen, bis sie zerfallen.",w:"Kann blähen – langsam steigern."},
+{e:"🧆",n:"Kichererbsen",k:3,m:6,p:["Püriert als Hummus (ohne Salz), dünn auf Brot oder Gemüse.","Zerdrückt, in Bällchen.","Ganz, weich gegart, halbiert."],z:"Aus Glas oder Dose gut abspülen.",w:"Ganze Kichererbsen anfangs zerdrücken."},
+{e:"🫘",n:"Weiße Bohnen / Kidneybohnen",k:3,m:7,p:["Gut gegart, fein püriert.","Zerdrückt.","Wie Familienkost."],z:"Dose/Glas gut abspülen; getrocknete lange einweichen und durchkochen.",w:"Nie roh oder halbgar – rohe Bohnen sind giftig."},
+{e:"🧊",n:"Tofu",k:3,m:6,a:"soja",p:["Weicher Tofu zerdrückt oder feste Sticks (kurz angebraten).","Kleine Würfel.","Wie Familienkost."],z:"Naturtofu ohne Salz/Würze.",w:"Soja ist ein Allergen."},
+{e:"🥜",n:"Erdnuss",k:3,m:6,a:"erdnuss",p:["Nur als Erdnussmus (100 % Erdnuss): dünn auf Brot oder in Brei eingerührt.","Mus dünn verstrichen oder gemahlen.","Mus, gemahlen."],z:"Etwas Mus mit warmem Wasser verdünnen und in Brei rühren.",w:"Ganze Erdnüsse bis ca. 5 Jahre nie geben. Dickes Mus pur klebt – immer verdünnen oder dünn streichen."},
+// Nüsse & Samen
+{e:"🌰",n:"Mandel",k:4,m:6,a:"baumnuss",p:["Mandelmus dünn oder fein gemahlen im Brei.","Mus oder gemahlen.","Mus oder gemahlen."],z:"Ungesüßtes Mus verwenden.",w:"Ganze Nüsse bis ca. 5 Jahre nie."},
+{e:"🌰",n:"Haselnuss",k:4,m:6,a:"baumnuss",p:["Mus dünn oder fein gemahlen.","Mus oder gemahlen.","Mus oder gemahlen."],z:"Ohne Zucker/Kakao.",w:"Ganze Nüsse bis ca. 5 Jahre nie."},
+{e:"🌰",n:"Cashew",k:4,m:6,a:"baumnuss",p:["Mus dünn oder gemahlen.","Mus oder gemahlen.","Mus oder gemahlen."],z:"",w:"Ganze Nüsse bis ca. 5 Jahre nie."},
+{e:"🌰",n:"Walnuss",k:4,m:6,a:"baumnuss",p:["Fein gemahlen im Brei.","Gemahlen.","Gemahlen."],z:"",w:"Ganze Nüsse bis ca. 5 Jahre nie."},
+{e:"⚪",n:"Sesam (Tahin)",k:4,m:6,a:"sesam",p:["Tahin dünn verstrichen oder in Brei/Hummus.","Tahin, gemahlener Sesam.","Wie Familienkost."],z:"",w:"Sesam ist ein Allergen."},
+{e:"🌱",n:"Lein- & Chiasamen",k:4,m:6,p:["Fein gemahlen, eine Messerspitze im Brei.","Gemahlen.","Gemahlen oder eingeweicht."],z:"Leinsamen frisch mahlen.",w:"Nur kleine Mengen, genug Flüssigkeit dazu."},
+// Fleisch & Fisch
+{e:"🥩",n:"Rindfleisch",k:5,m:5,p:["Mager, gegart und fein püriert im Mittagsbrei (20–30 g) – wichtige Eisenquelle. Große Streifen zum Lutschen.","Weiche Hackbällchen, fein geschnitten.","Wie Familienkost."],z:"Durchgaren, mit etwas Kochwasser fein pürieren.",w:"Immer durchgaren. Kein Tatar."},
+{e:"🍗",n:"Hähnchen / Pute",k:5,m:5,p:["Durchgegart püriert; Schenkelfleisch in Streifen (bleibt saftiger).","Fein geschnitten, Bällchen.","Wie Familienkost."],z:"Vollständig durchgaren.",w:"Knochen und Knorpel entfernen."},
+{e:"🥓",n:"Schwein (mager)",k:5,m:6,p:["Mager, durchgegart, püriert.","Fein geschnitten.","Wie Familienkost."],z:"",w:"Keine Wurst oder gepökeltes Fleisch – salzreich."},
+{e:"🐟",n:"Lachs",k:5,m:6,a:"fisch",p:["1–2× pro Woche statt Fleisch im Brei, durchgegart und zerdrückt.","Zerpflückt, Fischbällchen.","Wie Familienkost."],z:"Im Ofen oder gedämpft durchgaren, Gräten sorgfältig entfernen.",w:"Gräten prüfen! Kein Räucherlachs oder roher Fisch."},
+{e:"🐟",n:"Weißfisch (Kabeljau, Seelachs)",k:5,m:6,a:"fisch",p:["Durchgegart, zerpflückt im Brei.","Zerpflückt.","Wie Familienkost."],z:"Dämpfen oder dünsten.",w:"Gräten prüfen."},
+// Ei & Milch
+{e:"🥚",n:"Ei",k:6,m:6,a:"ei",p:["Hart gekocht (zerdrückt oder in Vierteln) oder als Omelett-Streifen – immer vollständig durchgegart.","Rührei, Omelett, in Pancakes.","Wie Familienkost."],z:"10 Min. kochen, bis das Eigelb fest ist.",w:"Kein rohes oder weiches Ei (Salmonellen)."},
+{e:"🥛",n:"Naturjoghurt",k:6,m:6,a:"milch",p:["Kleine Mengen, Vollfett, ungesüßt – z. B. mit Obstmus.","Als Dip oder mit Obst.","Wie Familienkost."],z:"Naturjoghurt 3,5 % ohne Zucker.",w:"Keine gesüßten Kinderjoghurts."},
+{e:"🥛",n:"Kuhmilch",k:6,m:6,a:"milch",p:["Nur im Milch-Getreide-Brei (ca. 200 ml Vollmilch am Tag), nicht als Getränk.","Weiterhin im Brei.","Als Getränk aus dem Becher, ca. 300 ml Milch(produkte) am Tag."],z:"Pasteurisierte Vollmilch 3,5 %.",w:"Als Getränk erst ab 12 Monaten. Keine Rohmilch."},
+{e:"🧀",n:"Käse (mild)",k:6,m:8,a:"milch",p:["Milder, salzarmer Käse gerieben oder dünne Streifen (Mozzarella, Frischkäse).","Kleine Stücke, gerieben.","Wie Familienkost, in Maßen."],z:"Pasteurisierte, salzarme Sorten.",w:"Kein Rohmilchkäse. Käse ist salzreich – sparsam."},
+{e:"🥣",n:"Quark",k:6,m:10,a:"milch",p:["","Kleine Mengen, Speisequark 20–40 % mit Obst.","Wie Familienkost."],z:"",w:"Kein Magerquark – sehr eiweißreich."},
+{e:"🧈",n:"Butter",k:6,m:6,a:"milch",p:["Kleine Menge im Gemüse oder auf Brot.","Kleine Menge.","In Maßen."],z:"",w:"Im Brei besser Rapsöl (wegen Omega-3)."},
+// Erst später / meiden
+{e:"🍯",n:"Honig",k:7,m:12,p:["","","Kleine Mengen ok."],z:"",w:"Im 1. Lebensjahr nie – auch nicht gebacken: Gefahr von Säuglingsbotulismus."},
+{e:"🧂",n:"Salz & Zucker",k:7,m:12,p:["","","Sparsam, Familienessen salzarm kochen."],z:"",w:"Im 1. Lebensjahr nicht zufügen – Babynieren sind noch nicht ausgereift."},
+{e:"🥜",n:"Ganze Nüsse",k:7,m:60,p:["","",""],z:"",w:"Bis ca. 5 Jahre nie ganz – hohes Erstickungsrisiko. Stattdessen Mus oder gemahlen."},
+{e:"🍿",n:"Popcorn",k:7,m:60,p:["","",""],z:"",w:"Bis ca. 4–5 Jahre meiden – Erstickungsgefahr."},
+{e:"🌭",n:"Wurst & Würstchen",k:7,m:12,p:["","","Sparsam; Würstchen längs vierteln, nie in runden Scheiben."],z:"",w:"Salzreich. Runde Scheiben sind gefährlich – immer längs schneiden."},
+{e:"🍘",n:"Reiswaffeln & Reisdrink",k:7,m:null,p:["","",""],z:"",w:"Meiden – oft mit Arsen belastet."},
+{e:"🥩",n:"Rohes Fleisch, roher Fisch, Rohwurst",k:7,m:null,p:["","",""],z:"",w:"Meiden (Salami, roher Schinken, Tatar, Sushi, Räucherfisch) – Keimgefahr."},
+{e:"🐟",n:"Thunfisch & Schwertfisch",k:7,m:null,p:["","",""],z:"",w:"Meiden – hoher Quecksilbergehalt. Lieber Lachs oder Seelachs."},
+{e:"🦌",n:"Wild",k:7,m:null,p:["","",""],z:"",w:"Bei Kleinkindern meiden – Bleibelastung durch Munition."},
+{e:"🌱",n:"Rohe Sprossen",k:7,m:null,p:["","",""],z:"",w:"Nur durchgegart – roh keimbelastet."},
+{e:"🥤",n:"Pflanzendrinks",k:7,m:12,p:["","","Nur ergänzend, nicht als Milchersatz ohne Beratung."],z:"",w:"Kein Ersatz für Muttermilch, Säuglingsnahrung oder Kuhmilch."},
+{e:"🧃",n:"Saft & gesüßte Getränke",k:7,m:null,p:["","",""],z:"",w:"Zum Trinken Wasser. Saft nur als Löffel im Brei für Vitamin C."}
+];
+
+const ALLERGENS=[
+ {k:"ei",e:"🥚",n:"Ei"},{k:"erdnuss",e:"🥜",n:"Erdnuss"},{k:"milch",e:"🥛",n:"Kuhmilch"},
+ {k:"weizen",e:"🌾",n:"Weizen / Gluten"},{k:"fisch",e:"🐟",n:"Fisch"},{k:"baumnuss",e:"🌰",n:"Baumnüsse"},
+ {k:"sesam",e:"⚪",n:"Sesam"},{k:"soja",e:"🧊",n:"Soja"}
+];
+
+/* ---------- Rezepte ---------- */
+const RECIPES=[
+{n:"Karotten-Kartoffel-Rind-Brei",e:"🥕",m:5,t:30,typ:"Brei",d:"Der klassische erste Mittagsbrei.",
+ i:[["100 g","Karotten"],["50 g","Kartoffeln"],["25 g","mageres Rindfleisch"],["3 EL","Orangensaft oder Obstmus"],["1 EL","Rapsöl (8–10 g)"]],
+ s:["Fleisch klein schneiden und in wenig Wasser ca. 15 Min. garen.","Karotten und Kartoffeln schälen, würfeln, zum Fleisch geben und weitere 15 Min. garen.","Alles mit etwas Kochwasser fein pürieren.","Saft und Rapsöl unterrühren. Nicht salzen."]},
+{n:"Kürbis-Kartoffel-Hafer-Brei",e:"🎃",m:6,t:25,typ:"Brei",d:"Vegetarischer Mittagsbrei – Getreide statt Fleisch, Vitamin C für das Eisen.",
+ i:[["100 g","Hokkaido"],["50 g","Kartoffeln"],["10 g","zarte Haferflocken"],["3 EL","Orangensaft"],["1 EL","Rapsöl"]],
+ s:["Kürbis und Kartoffeln würfeln und 15 Min. dämpfen.","Mit etwas Kochwasser pürieren.","Haferflocken einrühren und kurz quellen lassen.","Saft und Öl unterrühren."]},
+{n:"Pastinaken-Lachs-Brei",e:"🐟",m:6,t:25,typ:"Brei",d:"1–2× pro Woche statt Fleisch.",
+ i:[["100 g","Pastinaken"],["50 g","Kartoffeln"],["25 g","Lachsfilet ohne Haut"],["1 EL","Rapsöl"]],
+ s:["Pastinaken und Kartoffeln würfeln und 12 Min. garen.","Lachs die letzten 8 Min. mitdämpfen, bis er durch ist.","Gräten gründlich prüfen.","Alles pürieren, Öl unterrühren."]},
+{n:"Milch-Getreide-Brei",e:"🥛",m:6,t:10,typ:"Brei",d:"Der Abendbrei, etwa einen Monat nach dem Mittagsbrei.",
+ i:[["200 ml","Vollmilch 3,5 %"],["20 g","Grieß oder zarte Haferflocken"],["20 g","Obstmus"]],
+ s:["Milch aufkochen, Getreide einrühren.","2–3 Min. unter Rühren quellen lassen.","Etwas abkühlen, Obstmus unterrühren.","Temperatur am Handgelenk prüfen."]},
+{n:"Getreide-Obst-Brei",e:"🍐",m:7,t:10,typ:"Brei",d:"Milchfreier Nachmittagsbrei.",
+ i:[["20 g","zarte Haferflocken"],["90 ml","Wasser"],["100 g","reife Birne"],["1 TL","Rapsöl (5 g)"]],
+ s:["Haferflocken in Wasser aufkochen und quellen lassen.","Birne fein reiben oder pürieren.","Alles mischen, Öl unterrühren."]},
+{n:"Süßkartoffel-Pommes",e:"🍠",m:6,t:30,typ:"Fingerfood",d:"Weich gebacken, perfekt zum Greifen.",
+ i:[["1","Süßkartoffel"],["1 TL","Rapsöl"],["1 Prise","Paprika edelsüß (optional)"]],
+ s:["Ofen auf 200 °C vorheizen.","Süßkartoffel schälen und in fingerdicke Sticks schneiden.","Mit Öl mischen und 25 Min. backen, bis sie innen ganz weich sind.","Abkühlen lassen – innen wird es lange heiß."]},
+{n:"Bananen-Hafer-Pancakes",e:"🥞",m:6,t:15,typ:"Fingerfood",d:"Drei Zutaten, ohne Zucker.",
+ i:[["1","reife Banane"],["1","Ei"],["4 EL","zarte Haferflocken"]],
+ s:["Banane zerdrücken, Ei und Haferflocken unterrühren.","In einer beschichteten Pfanne mit wenig Öl kleine Pancakes backen.","Von beiden Seiten 2–3 Min. backen, bis sie ganz durch sind.","In Streifen schneiden."]},
+{n:"Omelett-Streifen mit Spinat",e:"🍳",m:6,t:10,typ:"Fingerfood",d:"Ei und Eisen zum Selbstessen.",
+ i:[["1","Ei"],["1 Handvoll","Babyspinat"],["1 EL","Milch"]],
+ s:["Spinat sehr fein hacken.","Mit Ei und Milch verquirlen.","Bei mittlerer Hitze stocken lassen, wenden, vollständig durchgaren.","In fingerbreite Streifen schneiden."]},
+{n:"Apfel-Zimt-Porridge",e:"🍎",m:6,t:10,typ:"Frühstück",d:"Warm und cremig.",
+ i:[["30 g","zarte Haferflocken"],["150 ml","Wasser oder Vollmilch"],["½","Apfel"],["1 Prise","Ceylon-Zimt"]],
+ s:["Haferflocken mit Flüssigkeit aufkochen.","Apfel fein reiben und 2 Min. mitköcheln.","Zimt einrühren, abkühlen lassen."]},
+{n:"Brokkoli-Hirse-Taler",e:"🥦",m:8,t:35,typ:"Fingerfood",d:"Gut zum Vorbereiten und Einfrieren.",
+ i:[["60 g","Hirse"],["100 g","Brokkoli"],["1","Ei"],["2 EL","zarte Haferflocken"]],
+ s:["Hirse mit 150 ml Wasser 10 Min. köcheln und quellen lassen.","Brokkoli weich dämpfen und fein hacken.","Alles mit Ei und Haferflocken mischen, kleine Taler formen.","Bei 180 °C ca. 20 Min. backen, nach der Hälfte wenden."]},
+{n:"Rote-Linsen-Dal",e:"🫘",m:7,t:25,typ:"Brei",d:"Mild, eisenreich, für die ganze Familie.",
+ i:[["50 g","rote Linsen"],["1","Karotte"],["50 ml","Kokosmilch"],["200 ml","Wasser"],["1 Prise","Kurkuma"]],
+ s:["Linsen waschen, Karotte fein würfeln.","Mit Wasser 15 Min. köcheln, bis alles zerfällt.","Kokosmilch und Kurkuma einrühren.","Baby-Portion abnehmen, für Erwachsene danach würzen."]},
+{n:"Hähnchen-Gemüse-Nudeln",e:"🍝",m:10,t:25,typ:"Familie",d:"Familienessen – Babyportion vor dem Salzen abnehmen.",
+ i:[["150 g","Fusilli"],["150 g","Hähnchenbrust"],["1","Zucchini"],["2","Tomaten"],["1 EL","Rapsöl"]],
+ s:["Nudeln weich kochen.","Hähnchen fein würfeln und im Öl durchgaren.","Zucchini und gehäutete Tomaten dazu, 10 Min. schmoren.","Mit den Nudeln mischen, Babyportion abnehmen, Rest würzen."]}
+];
+
+/* ---------- Zustand & Speicher ---------- */
+const LS="beikost-v1";
+let state={birth:"",theme:"",diary:[],recipes:[],del:[],updated:0};
+try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s)state=Object.assign(state,s)}catch(e){}
+let remote=null, saveTimer=null;
+
+function save(){
+  state.updated=Date.now();
+  try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    if(!remote)return;
+    try{await remote.set(JSON.parse(JSON.stringify(state)))}catch(e){}
+  },700);
+}
+(async function connect(){
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user)return;
+    const uid=await user.id(); if(!uid)return;
+    const ref=db.doc("data/users/"+uid+"/beikost");
+    const snap=await ref.get();
+    if(snap.exists){
+      const d=snap.data();
+      if((d.updated||0)>(state.updated||0)){state=Object.assign({birth:"",theme:"",diary:[],recipes:[],del:[],updated:0},d);try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){};applyTheme();renderAll()}
+    }
+    remote=ref;
+    photoRef=id=>ref.collection("photos").doc(id);
+    flushPhotos();
+    if(!snap.exists&&(state.diary.length||state.birth||state.recipes.length))save();
+  }catch(e){}
+})();
+
+/* ---------- Helfer ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const todayISO=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+function ageMonths(){
+  if(!state.birth)return null;
+  const b=new Date(state.birth+"T00:00:00"),n=new Date();
+  let m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth());
+  if(n.getDate()<b.getDate())m--;
+  return Math.max(0,m);
+}
+function ageWeeksExtra(){
+  const b=new Date(state.birth+"T00:00:00"),n=new Date();const m=ageMonths();
+  const t=new Date(b);t.setMonth(t.getMonth()+m);return Math.floor((n-t)/(7*864e5));
+}
+function stageIdx(m){return m==null?-1:m<9?0:m<12?1:2}
+function fmtDate(iso){const d=new Date(iso+"T00:00:00");return d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"long"})}
+function daysSince(iso){return Math.floor((new Date(todayISO()+"T00:00:00")-new Date(iso+"T00:00:00"))/864e5)}
+function toast(t){const el=$("#toast");el.textContent=t;el.style.display="block";clearTimeout(el._t);el._t=setTimeout(()=>el.style.display="none",1800)}
+const foodBy=n=>FOODS.find(f=>f.n===n);
+function triedCount(n){return state.diary.filter(d=>d.f===n).length}
+function moBadge(f){
+  if(f.m==null)return `<div class="mo no">✕<small>meiden</small></div>`;
+  if(f.m>=24)return `<div class="mo no">${Math.round(f.m/12)} J<small>frühestens</small></div>`;
+  const a=ageMonths();const later=a!=null&&f.m>a;
+  return `<div class="mo ${later?"later":f.m>=12?"later":""}">${f.m}+<small>Monate</small></div>`;
+}
+
+/* ---------- Theme ---------- */
+function isDark(){return state.theme?state.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function applyTheme(){
+  if(state.theme)document.documentElement.setAttribute("data-theme",state.theme);
+  else document.documentElement.removeAttribute("data-theme");
+  $("#themeBtn").textContent=isDark()?"☀️":"🌙";
+}
+$("#themeBtn").onclick=()=>{state.theme=isDark()?"light":"dark";applyTheme();save()};
+applyTheme();
+
+/* ---------- Navigation ---------- */
+let current="heute";
+function go(v){
+  current=v;
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  window.scrollTo(0,0);
+}
+$("#tabs").onclick=e=>{const b=e.target.closest("button");if(b)go(b.dataset.v)};
+
+/* ---------- Sheet ---------- */
+function openSheet(html){$("#sheet").innerHTML='<div class="grab"></div>'+html;$("#sheetBg").style.display="block";requestAnimationFrame(()=>$("#sheet").classList.add("on"));$("#sheet").scrollTop=0}
+function closeSheet(){$("#sheet").classList.remove("on");$("#sheetBg").style.display="none"}
+$("#sheetBg").onclick=closeSheet;
+
+/* ---------- Heute ---------- */
+function stageTip(m){
+  if(m<4)return "Noch keine Beikost – Muttermilch oder Säuglingsnahrung reicht. Beikost startet frühestens mit Beginn des 5. Lebensmonats.";
+  if(m<5)return "Achte auf Reifezeichen: aufrecht sitzen mit Hilfe, Kopf halten, Interesse am Essen, Zungenstoßreflex lässt nach.";
+  if(m<6)return "Zeit für den ersten Mittagsbrei: mit wenigen Löffeln Gemüse starten, dann Kartoffel, dann Fleisch dazu.";
+  if(m<7)return "Wenn der Mittagsbrei klappt: etwa einen Monat später abends den Milch-Getreide-Brei einführen.";
+  if(m<9)return "Dritter Brei am Nachmittag (Getreide-Obst). Fingerfood darf jetzt immer mehr mitmischen. Wasser aus dem Becher anbieten.";
+  if(m<10)return "Pinzettengriff kommt: kleine weiche Stücke üben. Ab jetzt stückiger werden.";
+  if(m<12)return "Nach und nach am Familientisch mitessen – ungewürzt Portion abnehmen.";
+  return "Familienkost! Salz und Zucker weiter sparsam, ganze Nüsse und runde harte Stücke weiter meiden.";
+}
+function renderHome(){
+  const el=$("#v-heute"),a=ageMonths();
+  const chip=$("#ageChip");
+  if(a==null){
+    chip.hidden=true;
+    el.innerHTML=`<div class="setup stack">
+      <div style="font-size:40px">👶</div>
+      <h2 style="font-size:22px;font-weight:900">Wann ist dein Baby geboren?</h2>
+      <p class="muted">Dann zeigt dir die App, was im aktuellen Alter passt.</p>
+      <label class="f" for="birthIn" style="margin:4px 0 0">Geburtsdatum – hier antippen</label>
+      <input type="date" id="birthIn" max="${todayISO()}" style="min-height:48px">
+      <button class="btn full" id="birthSave">Geburtsdatum speichern</button>
+    </div>${homeCommon()}`;
+    $("#birthSave").onclick=()=>{const v=$("#birthIn").value;if(!v)return toast("Bitte ein Datum wählen");state.birth=v;save();renderAll();toast("Gespeichert")};
+    bindHome();return;
+  }
+  chip.hidden=false;chip.textContent=a+" Mon.";chip.onclick=()=>go("mehr");
+  const w=ageWeeksExtra();
+  const neu=FOODS.filter(f=>f.m!=null&&f.m===a);
+  const ok=FOODS.filter(f=>f.m!=null&&f.m<=a);
+  const untried=ok.filter(f=>!triedCount(f.n)&&f.k!==7).slice(0,8);
+  const due=allergenStatus().filter(x=>x.state==="due");
+  el.innerHTML=`<div class="hero">
+      <div class="spoon">🥄</div>
+      <div><span class="big">${a}</span> <span class="unit">Monate${w>0?" + "+w+" Wo.":""}</span></div>
+      <p>${esc(stageTip(a))}</p>
+    </div>
+    ${due.length?`<h2 class="sec">Wieder anbieten</h2><div class="card small">${due.map(x=>`${x.e} <b>${x.n}</b> – zuletzt vor ${x.days} Tagen`).join("<br>")}<p class="muted" style="margin-top:6px">Eingeführte Allergene regelmäßig (etwa 1–2× pro Woche) weiter anbieten.</p></div>`:""}
+    ${neu.length?`<h2 class="sec">Neu ab ${a} Monaten</h2>${neu.map(foodRow).join("")}`:""}
+    <h2 class="sec">Noch nicht probiert</h2>
+    ${untried.length?untried.map(foodRow).join(""):`<div class="card muted">Alles Passende schon probiert. Stark!</div>`}
+    ${homeCommon()}`;
+  bindHome();
+}
+function homeCommon(){
+  return `<h2 class="sec">Schnell eintragen</h2>
+  <button class="btn full" data-act="add">+ Mahlzeit ins Tagebuch</button>
+  <div class="row" style="margin-top:10px"><button class="btn warn full" data-act="sos">🆘 Verschlucken – Erste Hilfe</button></div>
+  <p class="disc">Richtwerte nach gängigen Empfehlungen (u. a. Netzwerk Gesund ins Leben). Ersetzt nicht den Rat von Kinderarzt oder Hebamme.</p>`;
+}
+function bindHome(){
+  $("#v-heute").onclick=e=>{
+    const f=e.target.closest("[data-food]");if(f)return showFood(f.dataset.food);
+    const b=e.target.closest("[data-act]");if(!b)return;
+    if(b.dataset.act==="add")addEntry();
+    if(b.dataset.act==="sos")showSOS();
+  };
+}
+
+/* ---------- Lebensmittel ---------- */
+let fCat=-1,fQuery="",fAge=false;
+function foodRow(f){
+  const c=triedCount(f.n);
+  const al=f.a?ALLERGENS.find(x=>x.k===f.a):null;
+  return `<button class="food" data-food="${esc(f.n)}">
+    <div class="em">${f.e}</div>
+    <div class="mid"><div class="nm">${esc(f.n)}${al?`<span class="tag">${esc(al.n)}</span>`:""}</div>
+    <div class="sub">${esc(CATS[f.k])}${c?` · <span class="tick">✓ ${c}× probiert</span>`:""}</div></div>
+    ${moBadge(f)}</button>`;
+}
+function renderFoods(){
+  const el=$("#v-essen");const a=ageMonths();
+  el.innerHTML=`<input type="search" id="fq" placeholder="Lebensmittel suchen …" value="${esc(fQuery)}">
+    <div class="chips" style="margin-top:10px" id="fc">
+      <button class="chip ${fCat<0?"on":""}" data-c="-1">Alle</button>
+      ${CATS.map((c,i)=>`<button class="chip ${fCat===i?"on":""}" data-c="${i}">${esc(c)}</button>`).join("")}
+    </div>
+    ${a!=null?`<label class="switch"><input type="checkbox" id="fa" ${fAge?"checked":""}> Nur was mit ${a} Monaten passt</label>`:""}
+    <div id="fl" style="margin-top:12px"></div>`;
+  const list=()=>{
+    const q=fQuery.trim().toLowerCase();
+    let L=FOODS.filter(f=>(fCat<0||f.k===fCat)&&(!q||f.n.toLowerCase().includes(q)));
+    if(fAge&&a!=null)L=L.filter(f=>f.m!=null&&f.m<=a);
+    L.sort((x,y)=>(x.m??99)-(y.m??99)||x.n.localeCompare(y.n,"de"));
+    $("#fl").innerHTML=L.length?L.map(foodRow).join(""):`<div class="empty"><div class="e">🔍</div>Nichts gefunden. Anderen Begriff versuchen.</div>`;
+  };
+  list();
+  $("#fq").oninput=e=>{fQuery=e.target.value;list()};
+  $("#fc").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;fCat=+b.dataset.c;renderFoods()};
+  const fa=$("#fa");if(fa)fa.onchange=e=>{fAge=e.target.checked;list()};
+  $("#fl").onclick=e=>{const f=e.target.closest("[data-food]");if(f)showFood(f.dataset.food)};
+}
+function showFood(name){
+  const f=foodBy(name);if(!f)return;
+  const a=ageMonths(),cur=stageIdx(a),start=stageIdx(f.m);
+  const labels=["Einstieg bis 8 Mon.","9–12 Monate","ab 12 Monaten"];
+  const al=f.a?ALLERGENS.find(x=>x.k===f.a):null;
+  const c=triedCount(f.n);
+  let strip="",stages="";
+  if(f.m!=null&&f.m<24){
+    strip=`<div class="strip">${labels.map((l,i)=>`<div class="${i>=start&&f.p[i]?"ok":"off"} ${i===cur?"now":""}">${l}</div>`).join("")}</div>
+      ${a!=null?`<p class="small muted">Umrandet: das aktuelle Alter deines Babys (${a} Mon.)</p>`:""}`;
+    stages=labels.map((l,i)=>f.p[i]?`<div class="stage"><b>${l}</b>${esc(f.p[i])}</div>`:"").join("");
+  }
+  openSheet(`<div class="hd"><div class="em">${f.e}</div><h2>${esc(f.n)}</h2>${moBadge(f)}</div>
+    <p class="muted small" style="margin-top:6px">${esc(CATS[f.k])}${al?` · Allergen: <b style="color:var(--beet)">${esc(al.n)}</b>`:""}${c?` · ✓ ${c}× probiert`:""}</p>
+    ${strip}${stages}
+    ${f.z?`<div class="infobox"><b>Zubereitung</b><br>${esc(f.z)}</div>`:""}
+    ${f.w?`<div class="warnbox">⚠️ ${esc(f.w)}</div>`:""}
+    <div class="row" style="margin-top:16px">
+      ${f.m!=null&&f.k!==7?`<button class="btn full" id="toDiary">Ins Tagebuch</button>`:""}
+      <button class="btn ghost full" id="closeS">Schließen</button>
+    </div>`);
+  $("#closeS").onclick=closeSheet;
+  const t=$("#toDiary");if(t)t.onclick=()=>addEntry(f.n);
+}
+
+/* ---------- Rezepte ---------- */
+let rTyp="Alle";
+const TYPS=["Brei","Fingerfood","Frühstück","Familie","Snack"];
+const TYPEM={Brei:"🥣",Fingerfood:"🥕",Frühstück:"🌅",Familie:"🍽️",Snack:"🍪"};
+function allRecipes(){return [...RECIPES.map((r,i)=>({...r,id:"b"+i})),...(state.recipes||[]).map(r=>({...r,own:true}))]}
+function recById(id){return allRecipes().find(r=>r.id===id)}
+function recCard(r,a){
+  const later=a!=null&&r.m&&r.m>a;
+  return `<button class="rec" data-r="${esc(r.id)}">
+    <div class="row">${r.photo?`<img class="thumb" data-ph="${esc(r.id)}" alt="">`:`<span style="font-size:30px">${esc(r.e||"🥣")}</span>`}
+    <div style="flex:1;min-width:0"><h3>${esc(r.n)}${r.own?'<span class="tag own">Eigenes</span>':""}</h3>${r.d?`<p class="small muted">${esc(r.d)}</p>`:""}</div></div>
+    <div class="meta">${r.m?`<span style="${later?"background:var(--sun-soft);color:var(--sun)":"background:var(--pea-soft);color:var(--pea)"}">ab ${r.m} Mon.</span>`:""}${r.t?`<span>${r.t} Min.</span>`:""}${r.typ?`<span>${esc(r.typ)}</span>`:""}</div></button>`;
+}
+function renderRecipes(){
+  const el=$("#v-rezepte"),a=ageMonths();
+  const typs=["Alle","Eigene",...TYPS];
+  const L=allRecipes().filter(r=>rTyp==="Alle"||(rTyp==="Eigene"?r.own:r.typ===rTyp)).sort((x,y)=>(x.m||0)-(y.m||0)||x.n.localeCompare(y.n,"de"));
+  el.innerHTML=`<div class="row"><button class="btn full" id="rNew">+ Eigenes Rezept</button><button class="btn ghost full" id="rPaste">📷 Aus Foto</button></div>
+   <div class="chips" id="rc" style="margin-top:12px">${typs.map(t=>`<button class="chip ${rTyp===t?"on":""}" data-t="${t}">${t}</button>`).join("")}</div>
+   <div style="margin-top:8px">${L.length?L.map(r=>recCard(r,a)).join(""):`<div class="empty"><div class="e">📖</div>${rTyp==="Eigene"?"Noch keine eigenen Rezepte. Leg oben eins an oder übernimm eins aus einem Foto.":"Keine Rezepte in dieser Kategorie."}</div>`}</div>`;
+  $("#rc").onclick=e=>{const b=e.target.closest("[data-t]");if(b){rTyp=b.dataset.t;renderRecipes()}};
+  $("#rNew").onclick=()=>editRecipe(null);
+  $("#rPaste").onclick=pasteRecipe;
+  el.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>showRecipe(b.dataset.r));
+  el.querySelectorAll("img[data-ph]").forEach(img=>loadPhoto(img.dataset.ph).then(u=>{if(u)img.src=u}));
+}
+function showRecipe(id){
+  const r=recById(id);if(!r)return;
+  openSheet(`${r.photo?'<img class="hero-img" id="rImg" alt="">':""}
+   <div class="hd"><div class="em">${esc(r.e||"🥣")}</div><h2>${esc(r.n)}</h2></div>
+   <div class="meta">${r.m?`<span>ab ${r.m} Monaten</span>`:""}${r.t?`<span>${r.t} Min.</span>`:""}${r.typ?`<span>${esc(r.typ)}</span>`:""}${r.own?"<span>Eigenes Rezept</span>":""}</div>
+   ${r.d?`<p style="margin-top:10px">${esc(r.d)}</p>`:""}
+   ${r.i&&r.i.length?`<h3 class="sec" style="font-size:17px">Zutaten</h3><ul class="ing">${r.i.map(x=>`<li>${x[0]?`<b>${esc(x[0])}</b>`:""}${esc(x[1])}</li>`).join("")}</ul>`:""}
+   ${r.s&&r.s.length?`<h3 class="sec" style="font-size:17px">So geht's</h3><ol class="steps">${r.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}
+   ${r.own?"":`<div class="infobox">Brei hält sich abgedeckt 1 Tag im Kühlschrank oder portioniert ca. 3 Monate eingefroren. Nur einmal aufwärmen.</div>`}
+   ${r.own?`<div class="row" style="margin-top:16px"><button class="btn ghost full" id="rEdit">✏️ Bearbeiten</button><button class="btn warn full" id="rDel">Löschen</button></div>`:""}
+   <button class="btn ghost full" style="margin-top:10px" id="closeS">Schließen</button>`);
+  $("#closeS").onclick=closeSheet;
+  if(r.photo)loadPhoto(r.id).then(u=>{const i=$("#rImg");if(i){if(u)i.src=u;else i.remove()}});
+  if(r.own){
+    $("#rEdit").onclick=()=>editRecipe(r);
+    $("#rDel").onclick=()=>{if(!confirm("Rezept „"+r.n+"“ löschen?"))return;state.recipes=state.recipes.filter(x=>x.id!==r.id);(state.del=state.del||[]).push(r.id);if(r.photo)deletePhoto(r.id);save();closeSheet();renderRecipes();toast("Rezept gelöscht")};
+  }
+}
+
+/* Fotos: lokal auf dem Gerät, zusätzlich gesichert */
+const photoCache={},pendingPhotos=new Set();let photoRef=null;
+const phKey=id=>"beikost-photo-"+id;
+function savePhoto(id,url){
+  photoCache[id]=url;
+  try{localStorage.setItem(phKey(id),url)}catch(e){}
+  if(photoRef)photoRef(id).set({img:url}).catch(()=>pendingPhotos.add(id));else pendingPhotos.add(id);
+}
+async function loadPhoto(id){
+  if(photoCache[id])return photoCache[id];
+  try{const v=localStorage.getItem(phKey(id));if(v)return photoCache[id]=v}catch(e){}
+  if(photoRef){try{const sn=await photoRef(id).get();if(sn.exists){const u=sn.data().img;photoCache[id]=u;try{localStorage.setItem(phKey(id),u)}catch(e){}return u}}catch(e){}}
+  return null;
+}
+function deletePhoto(id){
+  delete photoCache[id];pendingPhotos.delete(id);
+  try{localStorage.removeItem(phKey(id))}catch(e){}
+  if(photoRef)photoRef(id).delete().catch(()=>{});
+}
+function flushPhotos(){pendingPhotos.forEach(id=>{const u=photoCache[id]||(()=>{try{return localStorage.getItem(phKey(id))}catch(e){return null}})();if(u&&photoRef)photoRef(id).set({img:u}).then(()=>pendingPhotos.delete(id)).catch(()=>{})})}
+function compressImage(file){
+  return new Promise((res,rej)=>{
+    const img=new Image(),u=URL.createObjectURL(file);
+    img.onload=()=>{
+      let max=900,q=.72,out="";
+      for(let k=0;k<5;k++){
+        const sc=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+        const c=document.createElement("canvas");c.width=Math.round(img.naturalWidth*sc);c.height=Math.round(img.naturalHeight*sc);
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        out=c.toDataURL("image/jpeg",q);
+        if(out.length<200000)break;
+        max=Math.round(max*.8);q=Math.max(.45,q-.08);
+      }
+      URL.revokeObjectURL(u);res(out);
+    };
+    img.onerror=()=>{URL.revokeObjectURL(u);rej()};
+    img.src=u;
+  });
+}
+
+/* Zutatenzeile in Menge + Zutat aufteilen */
+const UNIT="(?:g|kg|mg|ml|l|cl|dl|EL|TL|Tasse[n]?|Prise[n]?|Msp\\.?|Stk\\.?|Stück|Handvoll|Bund|Pck\\.?|Päckchen|Becher|Scheibe[n]?|Zehe[n]?|Dose[n]?|Glas|Schuss)";
+const NUM="(?:ca\\.\\s*|etwa\\s*)?[\\d½¼¾⅓⅔][\\d.,/½¼¾⅓⅔\\s–-]*";
+const reFront=new RegExp("^("+NUM+"\\s*"+UNIT+"?\\.?)\\s+(.+)$","i");
+const reBack=new RegExp("^(.+?)[,:]?\\s+("+NUM+"\\s*"+UNIT+"\\.?)$","i");
+const reWord=new RegExp("^((?:eine?|einen|etwas|1\\/2)\\s+"+UNIT+"?\\.?)\\s+(.+)$","i");
+const BULLET=/^([•\-–*·▪◦●]\s*|\d{1,2}[.)]\s+)/;
+function splitIng(l){
+  l=l.replace(BULLET,"").trim();let m;
+  if((m=l.match(reFront)))return [m[1].trim(),m[2].trim()];
+  if((m=l.match(reBack)))return [m[2].trim(),m[1].trim()];
+  if((m=l.match(reWord)))return [m[1].trim(),m[2].trim()];
+  return ["",l];
+}
+function looksIng(l){
+  if(l.length>70)return false;
+  return /^([\d½¼¾⅓⅔]|ca\.|etwa\s|eine?\s|einen\s|prise|handvoll|n\.\s?b\.|nach belieben)/i.test(l)||new RegExp("\\b\\d+\\s?"+UNIT+"\\b","i").test(l);
+}
+
+/* Rezepttext automatisch aufteilen – läuft komplett auf dem Gerät */
+function parseRecipe(txt){
+  const lines=txt.replace(/\r/g,"").split("\n").map(l=>l.replace(/\s+/g," ").trim()).filter(Boolean);
+  const r={n:"",m:null,t:null,d:"",i:[],s:[],typ:"Brei"};
+  const HI=/^(zutaten|für\s+\d|das brauchst du|einkaufsliste|ingredients)\b/i;
+  const HS=/^(zubereitung|so geht'?s|so wird'?s gemacht|anleitung|schritte|arbeitsschritte|und so geht'?s|method|instructions)\b/i;
+  const META=/^(zubereitungszeit|arbeitszeit|kochzeit|backzeit|gesamtzeit|zeit|dauer|portion|ergibt|schwierigkeit|kalorien)\b/i;
+  const all=lines.join(" ");
+  let mm=all.match(/ab\s*(?:dem\s*)?(?:ca\.\s*)?(\d{1,2})\.?\s*(?:lebens)?mon/i);if(mm)r.m=+mm[1];
+  const tl=lines.find(l=>/(zeit|dauer)/i.test(l)&&/\d+\s*min/i.test(l));if(tl)r.t=+tl.match(/(\d+)\s*min/i)[1];
+  if(/finger|sticks|taler|pancake|bällchen|muffin/i.test(all))r.typ="Fingerfood";
+  else if(/porridge|frühstück|müsli/i.test(all))r.typ="Frühstück";
+  let mode=null;
+  const addStep=(l,forceNew)=>{
+    const numbered=/^\d{1,2}[.)]\s+/.test(l)||/^[•\-–*·▪◦●]\s*/.test(l);
+    const c=l.replace(BULLET,"").trim();if(!c)return;
+    const prev=r.s[r.s.length-1];
+    if(!prev||numbered||forceNew||/[.!?:]$/.test(prev))r.s.push(c);else r.s[r.s.length-1]=prev+" "+c;
+  };
+  lines.forEach((l,k)=>{
+    if(!r.n&&k===0&&!HI.test(l)&&!HS.test(l)&&!looksIng(l)){r.n=l.replace(/[:.]$/,"");return}
+    if(HI.test(l)){mode="i";const rest=l.replace(HI,"").replace(/^[^:]*:?/,"").trim();return}
+    if(HS.test(l)){mode="s";return}
+    if(META.test(l)||/^ab\s*\d{1,2}\.?\s*(lebens)?mon/i.test(l))return;
+    const c=l.replace(BULLET,"").trim();
+    if(mode==="i"){
+      if(looksIng(c)||c.length<45)r.i.push(splitIng(c));else{mode="s";addStep(l,true)}
+    }else if(mode==="s")addStep(l);
+    else{
+      if(looksIng(c))r.i.push(splitIng(c));
+      else if(!r.i.length&&!r.s.length&&!r.d&&c.length<140)r.d=c;
+      else addStep(l);
+    }
+  });
+  if(!r.n)r.n="Neues Rezept";
+  return r;
+}
+function pasteRecipe(){
+  openSheet(`<div class="hd"><div class="em">📷</div><h2>Rezept aus Foto</h2></div>
+   <p class="muted small" style="margin-top:6px">Läuft komplett auf deinem iPhone, ohne Internet.</p>
+   <ol class="big">
+    <li>Rezept fotografieren und das Foto in der Fotos-App öffnen.</li>
+    <li>Lange auf den Text drücken, „Alle auswählen“ und dann „Kopieren“ tippen.</li>
+    <li>Unten ins Feld tippen und „Einsetzen“ wählen.</li>
+   </ol>
+   <textarea id="pT" style="min-height:190px;margin-top:10px" placeholder="Rezepttext hier einsetzen …"></textarea>
+   <div class="row" style="margin-top:14px"><button class="btn ghost full" id="closeS">Abbrechen</button><button class="btn full" id="pGo">Aufteilen & prüfen</button></div>`);
+  $("#closeS").onclick=closeSheet;
+  $("#pGo").onclick=()=>{
+    const t=$("#pT").value.trim();if(!t)return toast("Bitte zuerst den Text einsetzen");
+    const r=parseRecipe(t);
+    editRecipe(r,`Automatisch aufgeteilt: ${r.i.length} Zutaten, ${r.s.length} Schritte. Bitte kurz prüfen – tippe dann auf „Foto wählen“, um das Rezeptfoto dazuzulegen.`);
+  };
+}
+function editRecipe(r,hint){
+  r=r||{};
+  let photo=null,photoAct="keep";
+  const ingTxt=(r.i||[]).map(x=>(x[0]?x[0]+" ":"")+x[1]).join("\n");
+  const stTxt=(r.s||[]).join("\n");
+  openSheet(`<div class="hd"><div class="em">✏️</div><h2>${r.own?"Rezept bearbeiten":"Neues Rezept"}</h2></div>
+   ${hint?`<div class="infobox">${esc(hint)}</div>`:""}
+   <label class="f">Name</label><input type="text" id="rN" value="${esc(r.n||"")}" placeholder="z. B. Omas Kartoffelbrei">
+   <div class="row">
+     <div style="flex:1.3"><label class="f">Art</label><select id="rT">${TYPS.map(t=>`<option ${r.typ===t?"selected":""}>${t}</option>`).join("")}</select></div>
+     <div style="flex:1"><label class="f">Ab Monat</label><input type="number" inputmode="numeric" id="rM" min="4" max="36" value="${r.m??""}" placeholder="6"></div>
+     <div style="flex:1"><label class="f">Minuten</label><input type="number" inputmode="numeric" id="rZ" min="1" max="600" value="${r.t??""}" placeholder="20"></div>
+   </div>
+   <label class="f">Kurzbeschreibung (optional)</label><input type="text" id="rD" value="${esc(r.d||"")}">
+   <label class="f">Zutaten – eine pro Zeile</label>
+   <textarea id="rI" style="min-height:130px" placeholder="100 g Karotten&#10;50 g Kartoffeln&#10;1 EL Rapsöl">${esc(ingTxt)}</textarea>
+   <label class="f">Zubereitung – ein Schritt pro Zeile</label>
+   <textarea id="rS" style="min-height:150px" placeholder="Karotten schälen und würfeln.&#10;15 Min. dämpfen.&#10;Fein pürieren.">${esc(stTxt)}</textarea>
+   <label class="f">Foto (optional)</label>
+   <img id="phPrev" class="hero-img" alt="" hidden>
+   <div class="row"><label class="btn ghost full" for="phIn" style="text-align:center">📷 Foto wählen</label><button class="btn warn" id="phDel" hidden>Entfernen</button></div>
+   <input type="file" id="phIn" accept="image/*" class="vh">
+   <div class="row" style="margin-top:18px"><button class="btn ghost full" id="closeS">Abbrechen</button><button class="btn full" id="rSave">Rezept speichern</button></div>`);
+  const prev=$("#phPrev"),del=$("#phDel");
+  const show=u=>{if(u){prev.src=u;prev.hidden=false;del.hidden=false}else{prev.hidden=true;prev.removeAttribute("src");del.hidden=true}};
+  if(r.own&&r.photo)loadPhoto(r.id).then(show);
+  $("#phIn").onchange=async e=>{
+    const f=e.target.files&&e.target.files[0];if(!f)return;
+    try{photo=await compressImage(f);photoAct="new";show(photo)}catch(err){toast("Foto konnte nicht gelesen werden")}
+    e.target.value="";
+  };
+  del.onclick=()=>{photo=null;photoAct="remove";show(null)};
+  $("#closeS").onclick=closeSheet;
+  $("#rSave").onclick=()=>{
+    const n=$("#rN").value.trim();if(!n)return toast("Bitte einen Namen eingeben");
+    const typ=$("#rT").value;
+    const ings=$("#rI").value.split("\n").map(l=>l.trim()).filter(Boolean).map(splitIng);
+    const steps=$("#rS").value.split("\n").map(l=>l.replace(BULLET,"").trim()).filter(Boolean);
+    const id=r.own?r.id:"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+    const rec={id,n,typ,e:TYPEM[typ]||"🥣",m:parseInt($("#rM").value)||null,t:parseInt($("#rZ").value)||null,d:$("#rD").value.trim(),i:ings,s:steps,photo:!!(r.own&&r.photo),u:Date.now()};
+    if(photoAct==="new"&&photo){savePhoto(id,photo);rec.photo=true}
+    else if(photoAct==="remove"){deletePhoto(id);rec.photo=false}
+    state.recipes=state.recipes||[];
+    const ix=state.recipes.findIndex(x=>x.id===id);
+    if(ix>=0)state.recipes[ix]=rec;else state.recipes.push(rec);
+    save();closeSheet();renderRecipes();toast("Rezept gespeichert");
+  };
+}
+
+/* ---------- Tagebuch ---------- */
+const REACT={mag:["😋","Mag es"],neutral:["😐","Geht so"],nein:["😖","Abgelehnt"]};
+const SYMPT=["Hautausschlag","Rötung am Mund","Schwellung","Erbrechen","Durchfall","Blähungen","Verstopfung"];
+const MEALS=["Frühstück","Mittag","Nachmittag","Abend","Snack"];
+function addEntry(pre){
+  let react="mag";
+  openSheet(`<div class="hd"><div class="em">📒</div><h2>Mahlzeit eintragen</h2></div>
+   <label class="f">Lebensmittel</label>
+   <input type="text" id="eF" list="foodList" placeholder="z. B. Karotte" value="${esc(pre||"")}">
+   <datalist id="foodList">${FOODS.filter(f=>f.m!=null&&f.k!==7).map(f=>`<option value="${esc(f.n)}">`).join("")}</datalist>
+   <div class="row" style="margin-top:4px">
+     <div style="flex:1"><label class="f">Datum</label><input type="date" id="eD" value="${todayISO()}" max="${todayISO()}"></div>
+     <div style="flex:1"><label class="f">Mahlzeit</label><select id="eM">${MEALS.map(m=>`<option>${m}</option>`).join("")}</select></div>
+   </div>
+   <label class="f">Wie war's?</label>
+   <div class="react" id="eR">${Object.entries(REACT).map(([k,v])=>`<button data-k="${k}" class="${k===react?"on":""}"><span>${v[0]}</span>${v[1]}</button>`).join("")}</div>
+   <label class="f">Auffälligkeiten danach?</label>
+   <div class="checks" id="eS">${SYMPT.map(s=>`<label><input type="checkbox" value="${s}">${s}</label>`).join("")}</div>
+   <label class="f">Notiz</label>
+   <textarea id="eN" placeholder="Menge, Konsistenz, Besonderheiten …"></textarea>
+   <div class="row" style="margin-top:16px"><button class="btn ghost full" id="closeS">Abbrechen</button><button class="btn full" id="eSave">Speichern</button></div>`);
+  $("#eR").onclick=e=>{const b=e.target.closest("[data-k]");if(!b)return;react=b.dataset.k;$("#eR").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))};
+  $("#closeS").onclick=closeSheet;
+  $("#eSave").onclick=()=>{
+    const f=$("#eF").value.trim();if(!f)return toast("Bitte ein Lebensmittel eingeben");
+    const known=FOODS.find(x=>x.n.toLowerCase()===f.toLowerCase());
+    const s=[...$("#eS").querySelectorAll("input:checked")].map(x=>x.value);
+    state.diary.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),d:$("#eD").value||todayISO(),t:$("#eM").value,f:known?known.n:f,r:react,s,n:$("#eN").value.trim()});
+    save();closeSheet();renderAll();toast("Eingetragen");
+    if(s.length)setTimeout(()=>toast("Auffälligkeit notiert – im Blick behalten"),1900);
+  };
+}
+function renderDiary(){
+  const el=$("#v-buch");
+  const D=[...state.diary].sort((a,b)=>b.d.localeCompare(a.d)||MEALS.indexOf(b.t)-MEALS.indexOf(a.t));
+  const uniq=new Set(state.diary.map(d=>d.f)).size;
+  let html=`<div class="row"><div style="flex:1"><div style="font-size:34px;font-weight:900;line-height:1">${uniq}</div><div class="muted small">verschiedene Lebensmittel probiert</div></div>
+    <button class="btn" id="dAdd">+ Eintrag</button></div>`;
+  if(!D.length)html+=`<div class="empty"><div class="e">🥄</div>Noch keine Einträge. Trag die erste Mahlzeit ein – so behältst du Reaktionen und Allergene im Blick.</div>`;
+  let last="";
+  D.forEach(d=>{
+    if(d.d!==last){html+=`<div class="day">${esc(fmtDate(d.d))}</div>`;last=d.d}
+    const f=foodBy(d.f);
+    html+=`<div class="entry"><div class="re">${REACT[d.r]?REACT[d.r][0]:"🍽️"}</div>
+      <div><b>${f?f.e+" ":""}${esc(d.f)}</b> <span class="muted small">· ${esc(d.t)}</span>
+      ${d.s&&d.s.length?`<div class="symp">⚠️ ${esc(d.s.join(", "))}</div>`:""}
+      ${d.n?`<div class="small muted">${esc(d.n)}</div>`:""}</div>
+      <button class="x" data-del="${esc(d.id)}" aria-label="Eintrag löschen">✕</button></div>`;
+  });
+  el.innerHTML=html;
+  $("#dAdd").onclick=()=>addEntry();
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    if(!confirm("Diesen Eintrag löschen?"))return;
+    state.diary=state.diary.filter(x=>x.id!==b.dataset.del);(state.del=state.del||[]).push(b.dataset.del);save();renderAll();
+  });
+}
+
+/* ---------- Allergene ---------- */
+function allergenStatus(){
+  return ALLERGENS.map(al=>{
+    const E=state.diary.filter(d=>{const f=foodBy(d.f);return f&&f.a===al.k}).sort((a,b)=>b.d.localeCompare(a.d));
+    const bad=E.some(d=>d.s&&d.s.some(s=>s!=="Blähungen"&&s!=="Verstopfung"));
+    if(!E.length)return {...al,state:"new",n2:0};
+    const days=daysSince(E[0].d);
+    return {...al,state:bad?"bad":days>7?"due":"ok",days,n2:E.length};
+  });
+}
+function showAllergens(){
+  const S=allergenStatus();
+  const lbl={new:"noch nicht",due:"wieder anbieten",ok:"regelmäßig",bad:"Reaktion notiert"};
+  openSheet(`<div class="hd"><div class="em">🛡️</div><h2>Allergene</h2></div>
+   <p class="muted" style="margin:8px 0 14px">Nach aktuellen Empfehlungen sollen die häufigen Allergene nicht hinausgezögert werden. Einmal eingeführt, am besten regelmäßig (etwa 1–2× pro Woche) weiter anbieten. Grundlage ist dein Tagebuch.</p>
+   ${S.map(x=>`<div class="al"><div class="em">${x.e}</div><div><b>${esc(x.n)}</b><div class="small muted">${x.n2?`${x.n2}× gegeben · zuletzt vor ${x.days} Tag${x.days===1?"":"en"}`:"noch nicht im Tagebuch"}</div></div><span class="st ${x.state}">${lbl[x.state]}</span></div>`).join("")}
+   <div class="warnbox">Bei Neurodermitis, bekannter Allergie oder Allergien in der Familie: vor der Einführung von Erdnuss und Ei mit dem Kinderarzt sprechen.<br><br>Schwellung im Gesicht, Atemnot, Blässe oder Schlappheit nach dem Essen: sofort 112.</div>
+   <button class="btn ghost full" style="margin-top:14px" id="closeS">Schließen</button>`);
+  $("#closeS").onclick=closeSheet;
+}
+
+/* ---------- Notfall ---------- */
+function showSOS(){
+  openSheet(`<div class="sos"><h2>Baby verschluckt sich</h2>
+    <p style="margin-top:6px;font-weight:700">Hustet oder würgt es kräftig? Dann nicht eingreifen – ruhig bleiben, husten lassen. Würgen ist ein Schutzreflex.</p>
+    <a class="call" href="tel:112">📞 112 anrufen</a></div>
+   <h3 class="sec" style="font-size:17px">Kein Husten, kein Laut, blau werdend – Baby unter 1 Jahr</h3>
+   <ol class="big">
+    <li>Laut um Hilfe rufen, 112 wählen lassen (oder Lautsprecher an).</li>
+    <li>Baby bäuchlings auf deinen Unterarm legen, Kopf tiefer als Brust, Kiefer mit der Hand stützen.</li>
+    <li>Bis zu 5 kräftige Schläge mit dem Handballen zwischen die Schulterblätter.</li>
+    <li>Hilft das nicht: Baby auf den Rücken drehen, Kopf tief. Bis zu 5 Brustkorbstöße mit zwei Fingern auf der Mitte des Brustbeins, knapp unter der Linie zwischen den Brustwarzen.</li>
+    <li>Im Wechsel 5 Rückenschläge und 5 Brustkorbstöße wiederholen, bis der Fremdkörper draußen ist oder Hilfe kommt.</li>
+    <li>Wird das Baby bewusstlos: mit Wiederbelebung beginnen, die Leitstelle am Telefon leitet dich an.</li>
+   </ol>
+   <div class="warnbox">Keine Bauchstöße (Heimlich) bei Babys unter 1 Jahr. Nicht blind mit dem Finger im Mund suchen.</div>
+   <div class="infobox">Nach einem solchen Vorfall das Kind immer ärztlich untersuchen lassen. Ein Erste-Hilfe-Kurs am Kind (z. B. beim DRK) gibt Sicherheit.</div>
+   <button class="btn ghost full" style="margin-top:14px" id="closeS">Schließen</button>`);
+  $("#closeS").onclick=closeSheet;
+}
+
+/* ---------- Abgleich zwischen Handys ---------- */
+async function buildExport(){
+  const photos={};
+  for(const r of (state.recipes||[]))if(r.photo){const u=await loadPhoto(r.id);if(u)photos[r.id]=u}
+  return {app:"beikost",v:1,exported:new Date().toISOString(),birth:state.birth,diary:state.diary,recipes:state.recipes||[],del:state.del||[],photos};
+}
+function mergeImport(o){
+  if(!o||o.app!=="beikost")throw new Error("format");
+  const del=new Set([...(state.del||[]),...(o.del||[])]);
+  const diary=new Map();
+  [...state.diary,...(o.diary||[])].forEach(d=>{if(d&&d.id&&!del.has(d.id)&&!diary.has(d.id))diary.set(d.id,d)});
+  const newDiary=diary.size-state.diary.filter(d=>!del.has(d.id)).length;
+  const recs=new Map();(state.recipes||[]).forEach(r=>recs.set(r.id,r));
+  let newRec=0,updRec=0;
+  (o.recipes||[]).forEach(r=>{
+    if(!r||!r.id||del.has(r.id))return;
+    const mine=recs.get(r.id);
+    if(!mine){recs.set(r.id,r);newRec++;if(r.photo&&o.photos&&o.photos[r.id])savePhoto(r.id,o.photos[r.id])}
+    else if((r.u||0)>(mine.u||0)){recs.set(r.id,r);updRec++;if(r.photo&&o.photos&&o.photos[r.id])savePhoto(r.id,o.photos[r.id]);else if(!r.photo)deletePhoto(r.id)}
+  });
+  [...recs.keys()].forEach(id=>{if(del.has(id)){recs.delete(id);deletePhoto(id)}});
+  const removed=state.diary.filter(d=>del.has(d.id)).length;
+  state.diary=[...diary.values()];state.recipes=[...recs.values()];state.del=[...del].slice(-2000);
+  if(!state.birth&&o.birth)state.birth=o.birth;
+  save();renderAll();
+  return {newDiary,newRec,updRec,removed};
+}
+function showSync(){
+  let file=null,json="";
+  openSheet(`<div class="hd"><div class="em">🔄</div><h2>Abgleichen</h2></div>
+   <p class="muted" style="margin-top:6px">So habt ihr beide dasselbe Tagebuch und dieselben Rezepte. Nichts wird überschrieben – beide Stände werden zusammengeführt. Gelöschte Einträge verschwinden auch auf dem anderen Handy.</p>
+   <h3 class="sec" style="font-size:17px">1. Auf diesem Handy: Daten senden</h3>
+   <button class="btn full" id="sShare" disabled>Wird vorbereitet …</button>
+   <p class="small muted" style="margin-top:6px" id="sInfo"></p>
+   <h3 class="sec" style="font-size:17px">2. Auf dem anderen Handy: Daten übernehmen</h3>
+   <label class="btn ghost full" for="sFile" style="text-align:center">📂 Abgleich-Datei öffnen</label>
+   <input type="file" id="sFile" class="vh">
+   <details style="margin-top:10px"><summary class="small muted">Oder Text einsetzen</summary>
+     <textarea id="sTxt" style="margin-top:8px" placeholder="Abgleich-Text hier einsetzen …"></textarea>
+     <button class="btn ghost full" style="margin-top:8px" id="sTxtGo">Text übernehmen</button>
+   </details>
+   <div class="infobox">Danach das Gleiche in die andere Richtung, dann sind beide Handys auf demselben Stand. Die Datei ist gleichzeitig eine Sicherung – z. B. in „Dateien“ → iCloud Drive ablegen.</div>
+   <button class="btn ghost full" style="margin-top:14px" id="closeS">Schließen</button>`);
+  $("#closeS").onclick=closeSheet;
+  buildExport().then(o=>{
+    json=JSON.stringify(o);
+    const name="beikost-abgleich-"+todayISO()+".json";
+    file=new File([json],name,{type:"application/json"});
+    const kb=Math.max(1,Math.round(json.length/1024));
+    $("#sShare").disabled=false;$("#sShare").textContent="📤 Daten senden";
+    $("#sInfo").textContent=`${o.diary.length} Tagebuch-Einträge, ${o.recipes.length} eigene Rezepte, ${Object.keys(o.photos).length} Fotos · ca. ${kb>1024?(kb/1024).toFixed(1)+" MB":kb+" KB"}`;
+  });
+  $("#sShare").onclick=async()=>{
+    if(!file)return;
+    // 1. iPhone-Teilen-Menü (AirDrop, WhatsApp, Nachrichten, Dateien)
+    try{
+      if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Beikost-Abgleich"});toast("Gesendet");return}
+    }catch(e){if(e&&e.name==="AbortError")return}
+    // 2. Als Datei speichern
+    try{
+      const dl=window.claude&&window.claude.use?await window.claude.use("downloads"):null;
+      if(dl){await dl.save({filename:file.name,data:new Blob([json],{type:"application/json"})});toast("Datei gespeichert – jetzt aus „Dateien“ senden");return}
+    }catch(e){if(e&&e.code==="declined")return}
+    // 3. Als Text kopieren
+    try{await navigator.clipboard.writeText(json);toast("Kopiert – jetzt per Nachricht senden")}
+    catch(e){toast("Senden hier nicht möglich")}
+  };
+  const doImport=txt=>{
+    try{
+      const r=mergeImport(JSON.parse(txt));
+      closeSheet();
+      toast(`Übernommen: ${r.newDiary} Einträge, ${r.newRec+r.updRec} Rezepte${r.removed?`, ${r.removed} gelöscht`:""}`);
+    }catch(e){toast("Das ist keine Abgleich-Datei der Beikost-App")}
+  };
+  $("#sFile").onchange=e=>{
+    const f=e.target.files&&e.target.files[0];if(!f)return;
+    const rd=new FileReader();rd.onload=()=>doImport(String(rd.result));rd.onerror=()=>toast("Datei konnte nicht gelesen werden");rd.readAsText(f);
+    e.target.value="";
+  };
+  $("#sTxtGo").onclick=()=>{const t=$("#sTxt").value.trim();if(!t)return toast("Bitte zuerst den Text einsetzen");doImport(t)};
+}
+
+/* ---------- Mehr ---------- */
+function renderMore(){
+  const el=$("#v-mehr");
+  el.innerHTML=`<button class="menu" data-m="al"><span>🛡️</span><div>Allergene<small>Was ist eingeführt, was wieder fällig</small></div></button>
+   <button class="menu" data-m="sos"><span>🆘</span><div>Erste Hilfe bei Verschlucken<small>Würgen oder Ersticken – was tun</small></div></button>
+   <button class="menu" data-m="sync"><span>🔄</span><div>Mit anderem Handy abgleichen<small>Tagebuch & Rezepte teilen – ohne Internetdienst</small></div></button>
+   <button class="menu" data-m="plan"><span>🗓️</span><div>Der Beikost-Fahrplan<small>Welcher Brei wann</small></div></button>
+   <h2 class="sec">Einstellungen</h2>
+   <div class="card stack">
+     <label class="f" style="margin-top:0">Geburtsdatum des Babys</label>
+     <input type="date" id="bIn" value="${esc(state.birth)}" max="${todayISO()}">
+     <button class="btn full" id="bSave">Speichern</button>
+   </div>
+   <div class="card" style="margin-top:10px">
+     <label class="f" style="margin-top:0">Darstellung</label>
+     <div class="chips" id="thC">
+       <button class="chip ${!state.theme?"on":""}" data-t="">Wie iPhone</button>
+       <button class="chip ${state.theme==="light"?"on":""}" data-t="light">☀️ Hell</button>
+       <button class="chip ${state.theme==="dark"?"on":""}" data-t="dark">🌙 Dunkel</button>
+     </div>
+   </div>
+   <button class="btn warn full" style="margin-top:18px" id="wipe">Tagebuch komplett löschen</button>
+   <p class="disc">Die Angaben sind Richtwerte nach gängigen Empfehlungen. Jedes Kind hat sein eigenes Tempo – im Zweifel Kinderarzt oder Hebamme fragen.</p>
+   <p class="disc" style="margin-top:8px;font-weight:800">Version 2.0 · Offline · Stand 11.10.2026</p>`;
+  el.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const m=b.dataset.m;if(m==="al")showAllergens();if(m==="sos")showSOS();if(m==="plan")showPlan();if(m==="sync")showSync()});
+  $("#bSave").onclick=()=>{state.birth=$("#bIn").value;save();renderAll();toast("Gespeichert")};
+  $("#thC").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;state.theme=b.dataset.t;applyTheme();save();renderMore()};
+  $("#wipe").onclick=()=>{if(confirm("Wirklich alle Tagebuch-Einträge löschen? Das lässt sich nicht rückgängig machen.")){(state.del=state.del||[]).push(...state.diary.map(x=>x.id));state.diary=[];save();renderAll();toast("Tagebuch gelöscht")}};
+}
+function showPlan(){
+  openSheet(`<div class="hd"><div class="em">🗓️</div><h2>Beikost-Fahrplan</h2></div>
+   <p class="muted" style="margin-top:6px">Beikost beginnt je nach Reifezeichen zwischen Beginn des 5. und Beginn des 7. Lebensmonats. Stillen oder Flasche laufen weiter.</p>
+   <ol class="big">
+    <li><div><b>Mittagsbrei</b><br>Gemüse-Kartoffel-Fleisch-Brei. Mit Gemüse starten, nach ein paar Tagen Kartoffel, dann Fleisch. 1–2× pro Woche Fisch statt Fleisch.</div></li>
+    <li><div><b>Abendbrei · ca. 1 Monat später</b><br>Milch-Getreide-Brei mit Vollmilch und etwas Obst.</div></li>
+    <li><div><b>Nachmittagsbrei · wieder ca. 1 Monat später</b><br>Getreide-Obst-Brei ohne Milch. Jetzt Wasser aus Becher oder Glas anbieten.</div></li>
+    <li><div><b>Familienkost · ab ca. 10 Monaten</b><br>Nach und nach am Familientisch mitessen, weich, stückig, ungesalzen.</div></li>
+   </ol>
+   <div class="infobox">Breifrei (Baby-led Weaning) oder gemischt geht genauso – die Lebensmittel-Seite zeigt zu jedem Lebensmittel die passende Form zum Selbstessen.</div>
+   <button class="btn ghost full" style="margin-top:14px" id="closeS">Schließen</button>`);
+  $("#closeS").onclick=closeSheet;
+}
+
+/* ---------- Start ---------- */
+function renderAll(){renderHome();renderFoods();renderRecipes();renderDiary();renderMore()}
+renderAll();
+
+/* Offline-Betrieb & dauerhafter Speicher */
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "Beikost",
+  "short_name": "Beikost",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111712",
+  "theme_color": "#3F7F2E",
+  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}
